@@ -1,7 +1,12 @@
 {
     "name": "Varneon.VUdon.Logger.Editor",
     "references": [
-        "Varneon.VUdon.Logger.Runtime"
+        "Varneon.VUdon.Logger.Runtime",
+        "UdonSharp.Editor",
+        "UdonSharp.Runtime",
+        "Varneon.V-Inspector.Editor",
+        "Varneon.V-Inspector.Runtime",
+        "Varneon.NeonInspector.Editor"
     ],
     "includePlatforms": [
         "Editor"
