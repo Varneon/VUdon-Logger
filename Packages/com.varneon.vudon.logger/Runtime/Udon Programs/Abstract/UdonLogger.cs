@@ -1,6 +1,4 @@
-﻿#pragma warning disable IDE1006
-
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using UdonSharp;
 using UnityEngine;
 
