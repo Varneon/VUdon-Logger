@@ -6,6 +6,16 @@
 
 Runtime logger for UdonSharp
 
+# UdonLogger class
+
+[**UdonLogger**](https://github.com/Varneon/VUdon-Logger/blob/main/Packages/com.varneon.vudon.logger/Runtime/Udon%20Programs/Abstract/UdonLogger.cs) is an abstract class similar to `UnityEngine.ILogger` interface, which you can extend freely to suit your purposes.
+
+# UdonConsole prefab
+
+**UdonConsole** is an in-world console window for viewing the logged messages in game. Implements the **UdonLogger** class for use in a similar window design to the **ConsoleWindow** in the **Unity Editor**.
+
+![Unity_xer9Xo1rlv](https://user-images.githubusercontent.com/26690821/196436225-969b9a5b-407f-48ab-8bd9-9952c6fcc437.png)
+
 # Installation
 
 <details><summary>
