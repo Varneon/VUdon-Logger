@@ -20,6 +20,13 @@ Runtime logger for UdonSharp
 
 <details><summary>
 
+### Dependencies - `2`</summary>
+
+* [Neon Inspector](https://github.com/Varneon/Neon-Inspector)
+  * [V-Inspector](https://github.com/Varneon/V-Inspector)
+
+</details><details><summary>
+
 ### Import with [VRChat Creator Companion](https://vcc.docs.vrchat.com/vpm/packages#user-packages):</summary>
 
 > 1. Download `com.varneon.vudon.logger.zip` from [here](https://github.com/Varneon/VUdon-Logger/releases/latest)
