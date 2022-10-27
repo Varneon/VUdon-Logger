@@ -261,6 +261,11 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         {
             WriteLine(logType, BuildLogStringOutput(logType, string.Format(format, args), context));
         }
+
+        public override void ClearLogs()
+        {
+            Clear();
+        }
         #endregion
 
         #region Player Events
