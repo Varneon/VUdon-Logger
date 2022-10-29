@@ -29,6 +29,11 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         [FieldParentElement("Foldout_Settings")]
         private int MaxLogEntries = 100;
 
+        [SerializeField]
+        [Tooltip("How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed")]
+        [FieldParentElement("Foldout_Settings")]
+        private int MaxLogEntriesStep = 50;
+
         [SerializeField, Range(8, 32)]
         [FieldParentElement("Foldout_Settings")]
         private int FontSize = 24;
@@ -70,8 +75,6 @@ namespace Varneon.UdonPrefabs.RuntimeTools
             LEAVE_PREFIX = "[<color=red>LEAVE</color>]";
 
         private const string WHITESPACE = " ";
-
-        private const int MAX_ENTRY_ADJUSTMENT_STEP = 10;
 
         private const int
             FONT_MIN_SIZE = 8,
@@ -334,7 +337,7 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         /// </summary>
         public void DecreaseMaxEntries()
         {
-            SetMaxLogEntries(MaxLogEntries - MAX_ENTRY_ADJUSTMENT_STEP);
+            SetMaxLogEntries(MaxLogEntries - MaxLogEntriesStep);
         }
 
         /// <summary>
@@ -342,7 +345,7 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         /// </summary>
         public void IncreaseMaxEntries()
         {
-            SetMaxLogEntries(MaxLogEntries + MAX_ENTRY_ADJUSTMENT_STEP);
+            SetMaxLogEntries(MaxLogEntries + MaxLogEntriesStep);
         }
 
         /// <summary>
