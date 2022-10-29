@@ -26,6 +26,11 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         private bool ShowTimestamps = false;
 
         [SerializeField]
+        [Tooltip("How many entries are ensured to always be visible in the console")]
+        [FieldParentElement("Foldout_Settings")]
+        private int MinLogEntries = 10;
+
+        [SerializeField]
         [FieldParentElement("Foldout_Settings")]
         private int MaxLogEntries = 100;
 
@@ -354,7 +359,7 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         /// <param name="maxEntries"></param>
         private void SetMaxLogEntries(int maxEntries)
         {
-            MaxLogEntries = Mathf.Clamp(maxEntries, 0, ENTRIES_HARDCAP);
+            MaxLogEntries = Mathf.Clamp(maxEntries, MinLogEntries, ENTRIES_HARDCAP);
 
             MaxLogEntriesField.text = MaxLogEntries.ToString();
 
