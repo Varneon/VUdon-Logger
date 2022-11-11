@@ -274,6 +274,21 @@ namespace Varneon.UdonPrefabs.RuntimeTools
                 Destroy(logWindow.GetChild(i).gameObject);
             }
         }
+
+        public override void ClearLogs(LogType logType)
+        {
+            string logTypePrefix = ((int)logType).ToString();
+
+            for (int i = 0; i < GetCurrentLogEntryCount(); i++)
+            {
+                Transform element = logWindow.GetChild(i);
+
+                if (element.name.StartsWith(logTypePrefix))
+                {
+                    Destroy(element.gameObject);
+                }
+            }
+        }
         #endregion
 
         #region Player Events
