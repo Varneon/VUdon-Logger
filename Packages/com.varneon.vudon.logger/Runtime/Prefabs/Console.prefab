@@ -2840,18 +2840,20 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 3718074138842689578}
-  ShowTimestamps: 0
-  MaxLogEntries: 100
-  FontSize: 24
-  ProxyEntriesToLogs: 0
-  LogWindow: {fileID: 3718074137844359835}
-  LogItem: {fileID: 3718074138163775205}
-  LogToggle: {fileID: 3718074138598075316}
-  WarningToggle: {fileID: 3718074139199843373}
-  ErrorToggle: {fileID: 3718074138681583596}
-  TimestampsToggle: {fileID: 3718074138575210200}
-  MaxLogEntriesField: {fileID: 2786563554564753581}
-  FontSizeField: {fileID: 5552404634542757263}
+  showTimestamps: 0
+  minLogEntries: 10
+  maxLogEntries: 100
+  maxLogEntriesStep: 50
+  fontSize: 24
+  proxyEntriesToLogs: 0
+  logWindow: {fileID: 3718074137844359835}
+  logItem: {fileID: 3718074138163775205}
+  logToggle: {fileID: 3718074138598075316}
+  warningToggle: {fileID: 3718074139199843373}
+  errorToggle: {fileID: 3718074138681583596}
+  timestampsToggle: {fileID: 3718074138575210200}
+  maxLogEntriesField: {fileID: 2786563554564753581}
+  fontSizeField: {fileID: 5552404634542757263}
 --- !u!114 &3718074138842689578
 MonoBehaviour:
   m_ObjectHideFlags: 0

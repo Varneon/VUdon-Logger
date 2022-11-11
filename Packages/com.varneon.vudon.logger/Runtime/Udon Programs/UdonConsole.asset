@@ -50,13 +50,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: ShowTimestamps
+      Data: showTimestamps
     - Name: $v
       Entry: 7
       Data: 2|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: ShowTimestamps
+      Data: showTimestamps
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 3|System.RuntimeType, mscorlib
@@ -128,13 +128,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: MinLogEntries
+      Data: minLogEntries
     - Name: $v
       Entry: 7
       Data: 8|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: MinLogEntries
+      Data: minLogEntries
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 9|System.RuntimeType, mscorlib
@@ -206,13 +206,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: MaxLogEntries
+      Data: maxLogEntries
     - Name: $v
       Entry: 7
       Data: 14|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: MaxLogEntries
+      Data: maxLogEntries
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 9
@@ -269,13 +269,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: MaxLogEntriesStep
+      Data: maxLogEntriesStep
     - Name: $v
       Entry: 7
       Data: 18|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: MaxLogEntriesStep
+      Data: maxLogEntriesStep
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 9
@@ -342,13 +342,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: FontSize
+      Data: fontSize
     - Name: $v
       Entry: 7
       Data: 23|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: FontSize
+      Data: fontSize
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 9
@@ -417,13 +417,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: ProxyEntriesToLogs
+      Data: proxyEntriesToLogs
     - Name: $v
       Entry: 7
       Data: 28|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: ProxyEntriesToLogs
+      Data: proxyEntriesToLogs
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 3
@@ -480,13 +480,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: LogWindow
+      Data: logWindow
     - Name: $v
       Entry: 7
       Data: 32|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: LogWindow
+      Data: logWindow
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 33|System.RuntimeType, mscorlib
@@ -567,13 +567,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: LogItem
+      Data: logItem
     - Name: $v
       Entry: 7
       Data: 39|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: LogItem
+      Data: logItem
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 40|System.RuntimeType, mscorlib
@@ -636,13 +636,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: LogToggle
+      Data: logToggle
     - Name: $v
       Entry: 7
       Data: 44|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: LogToggle
+      Data: logToggle
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 45|System.RuntimeType, mscorlib
@@ -705,13 +705,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: WarningToggle
+      Data: warningToggle
     - Name: $v
       Entry: 7
       Data: 49|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: WarningToggle
+      Data: warningToggle
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 45
@@ -768,13 +768,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: ErrorToggle
+      Data: errorToggle
     - Name: $v
       Entry: 7
       Data: 53|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: ErrorToggle
+      Data: errorToggle
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 45
@@ -831,13 +831,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: TimestampsToggle
+      Data: timestampsToggle
     - Name: $v
       Entry: 7
       Data: 57|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: TimestampsToggle
+      Data: timestampsToggle
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 45
@@ -894,13 +894,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: MaxLogEntriesField
+      Data: maxLogEntriesField
     - Name: $v
       Entry: 7
       Data: 61|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: MaxLogEntriesField
+      Data: maxLogEntriesField
     - Name: <UserType>k__BackingField
       Entry: 7
       Data: 62|System.RuntimeType, mscorlib
@@ -963,13 +963,13 @@ MonoBehaviour:
       Data: 
     - Name: $k
       Entry: 1
-      Data: FontSizeField
+      Data: fontSizeField
     - Name: $v
       Entry: 7
       Data: 66|UdonSharp.Compiler.FieldDefinition, UdonSharp.Editor
     - Name: <Name>k__BackingField
       Entry: 1
-      Data: FontSizeField
+      Data: fontSizeField
     - Name: <UserType>k__BackingField
       Entry: 9
       Data: 62
