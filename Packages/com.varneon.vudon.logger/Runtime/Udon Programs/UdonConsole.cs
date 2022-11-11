@@ -239,12 +239,10 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         /// <summary>
         /// Clears the log entries
         /// </summary>
+        [Obsolete("Use ClearLogs() instead.")]
         public void Clear()
         {
-            for (int i = 0; i < GetCurrentLogEntryCount(); i++)
-            {
-                Destroy(logWindow.GetChild(i).gameObject);
-            }
+            ClearLogs();
         }
         #endregion
 
@@ -271,7 +269,10 @@ namespace Varneon.UdonPrefabs.RuntimeTools
 
         public override void ClearLogs()
         {
-            Clear();
+            for (int i = 0; i < GetCurrentLogEntryCount(); i++)
+            {
+                Destroy(logWindow.GetChild(i).gameObject);
+            }
         }
         #endregion
 
