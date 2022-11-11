@@ -1,5 +1,4 @@
 ﻿#pragma warning disable IDE0044 // Making serialized fields readonly hides them from the inspector
-#pragma warning disable CS0649
 
 using System;
 using UnityEngine;
