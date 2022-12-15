@@ -181,11 +181,7 @@ namespace Varneon.UdonPrefabs.RuntimeTools
 
             if (GetCurrentLogEntryCount() < maxLogEntries)
             {
-                newEntry = Instantiate(logItem).transform;
-                newEntry.SetParent(logWindow);
-                newEntry.localPosition = Vector3.zero;
-                newEntry.localRotation = Quaternion.identity;
-                newEntry.localScale = Vector3.one;
+                newEntry = Instantiate(logItem, logWindow, false).transform;
             }
             else
             {
