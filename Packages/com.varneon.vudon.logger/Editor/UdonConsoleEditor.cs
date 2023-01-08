@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using Varneon.VInspector;
 using Varneon.VUdon.Logger.Abstract;
 
-namespace Varneon.UdonPrefabs.RuntimeTools.Editor
+namespace Varneon.VUdon.Logger.Editor
 {
     /// <summary>
     /// Custom inspector for UdonConsole prefab
