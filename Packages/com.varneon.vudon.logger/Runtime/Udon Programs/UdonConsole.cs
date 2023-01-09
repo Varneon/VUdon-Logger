@@ -58,7 +58,7 @@ namespace Varneon.VUdon.Logger
 
         [SerializeField]
         [FieldParentElement("Foldout_Advanced")]
-        private string playerleavePrefix = "[<color=#C00>LEAVE</color>]:";
+        private string playerLeavePrefix = "[<color=#C00>LEAVE</color>]:";
 
         [Space]
         [Header("References")]
@@ -305,7 +305,7 @@ namespace Varneon.VUdon.Logger
         {
             if (!Utilities.IsValid(player)) { return; }
 
-            Log(string.Join(WHITESPACE, new string[] { systemPrefix, playerleavePrefix, player.displayName }));
+            Log(string.Join(WHITESPACE, new string[] { systemPrefix, playerLeavePrefix, player.displayName }));
         }
         #endregion
 
