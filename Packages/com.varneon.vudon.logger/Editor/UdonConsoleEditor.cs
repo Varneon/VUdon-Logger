@@ -25,6 +25,7 @@ namespace Varneon.VUdon.Logger.Editor
             VisualElement inspectorPanel = root.Q("InspectorPanel");
 
             inspectorPanel.Add(new Foldout() { name = "Foldout_Settings", text = "Settings" });
+            inspectorPanel.Add(new Foldout() { name = "Foldout_Advanced", text = "Advanced" });
             inspectorPanel.Add(new Foldout() { name = "Foldout_References", text = "References" });
             inspectorPanel.Add(new Foldout() { name = "Foldout_API", text = "API" });
 
