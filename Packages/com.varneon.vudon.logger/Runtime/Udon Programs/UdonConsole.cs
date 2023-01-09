@@ -50,7 +50,7 @@ namespace Varneon.VUdon.Logger
         [Header("Advanced")]
         [SerializeField]
         [FieldParentElement("Foldout_Advanced")]
-        private string systemPrefix = "[<color=#00FFFF>UdonConsole</color>]:";
+        private string systemPrefix = "[<color=#0CC>UdonConsole</color>]:";
 
         [SerializeField]
         [FieldParentElement("Foldout_Advanced")]
