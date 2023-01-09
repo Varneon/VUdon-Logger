@@ -52,6 +52,14 @@ namespace Varneon.VUdon.Logger
         [FieldParentElement("Foldout_Advanced")]
         private string systemPrefix = "[<color=#00FFFF>UdonConsole</color>]:";
 
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string playerJoinPrefix = "[<color=#0C0>JOIN</color>]:";
+
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string playerleavePrefix = "[<color=#C00>LEAVE</color>]:";
+
         [Space]
         [Header("References")]
         [SerializeField]
@@ -78,10 +86,6 @@ namespace Varneon.VUdon.Logger
         #endregion
 
         #region Constants
-        private const string
-            JOIN_PREFIX = "[<color=lime>JOIN</color>]",
-            LEAVE_PREFIX = "[<color=red>LEAVE</color>]";
-
         private const string WHITESPACE = " ";
 
         private const int
@@ -294,14 +298,14 @@ namespace Varneon.VUdon.Logger
         #region Player Events
         public override void OnPlayerJoined(VRCPlayerApi player)
         {
-            Log(string.Join(WHITESPACE, new string[] { systemPrefix, JOIN_PREFIX, player.displayName }));
+            Log(string.Join(WHITESPACE, new string[] { systemPrefix, playerJoinPrefix, player.displayName }));
         }
 
         public override void OnPlayerLeft(VRCPlayerApi player)
         {
             if (!Utilities.IsValid(player)) { return; }
 
-            Log(string.Join(WHITESPACE, new string[] { systemPrefix, LEAVE_PREFIX, player.displayName }));
+            Log(string.Join(WHITESPACE, new string[] { systemPrefix, playerleavePrefix, player.displayName }));
         }
         #endregion
 
