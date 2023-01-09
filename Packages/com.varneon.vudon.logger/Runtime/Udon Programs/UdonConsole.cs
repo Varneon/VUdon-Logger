@@ -19,30 +19,52 @@ namespace Varneon.VUdon.Logger
         #region Variables
 
         #region Serialized
+        /// <summary>
+        /// Should the timestamps be displayed on log entries by default
+        /// </summary>
         [Header("Settings")]
         [SerializeField]
+        [Tooltip("Should the timestamps be displayed on log entries by default")]
         [FieldParentElement("Foldout_Settings")]
         private bool showTimestamps = false;
 
+        /// <summary>
+        /// How many log entries are ensured to always be visible in the console
+        /// </summary>
         [SerializeField]
-        [Tooltip("How many entries are ensured to always be visible in the console")]
+        [Tooltip("How many log entries are ensured to always be visible in the console")]
         [FieldParentElement("Foldout_Settings")]
         private int minLogEntries = 10;
 
+        /// <summary>
+        /// How many log entries can the console display simultaneously by default
+        /// </summary>
         [SerializeField]
+        [Tooltip("How many log entries can the console display simultaneously")]
         [FieldParentElement("Foldout_Settings")]
         private int maxLogEntries = 100;
 
+        /// <summary>
+        /// How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed
+        /// </summary>
         [SerializeField]
         [Tooltip("How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed")]
         [FieldParentElement("Foldout_Settings")]
         private int maxLogEntriesStep = 50;
 
+        /// <summary>
+        /// Font size
+        /// </summary>
         [SerializeField, Range(8, 32)]
+        [Tooltip("Font size")]
         [FieldParentElement("Foldout_Settings")]
         private int fontSize = 24;
 
+        /// <summary>
+        /// Should the log entries be sent to the default logs as well
+        /// </summary>
         [SerializeField]
+        [Tooltip("Should the log entries be sent to the default logs as well")]
         [FieldParentElement("Foldout_Settings")]
         private bool proxyEntriesToLogs;
 
