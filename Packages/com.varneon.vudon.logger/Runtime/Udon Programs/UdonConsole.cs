@@ -7,7 +7,7 @@ using Varneon.VInspector;
 using Varneon.VUdon.Logger.Abstract;
 using VRC.SDKBase;
 
-namespace Varneon.UdonPrefabs.RuntimeTools
+namespace Varneon.VUdon.Logger
 {
     /// <summary>
     /// In-game console window for debugging UdonBehaviours
