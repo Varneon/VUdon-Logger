@@ -2846,6 +2846,9 @@ MonoBehaviour:
   maxLogEntriesStep: 50
   fontSize: 24
   proxyEntriesToLogs: 0
+  systemPrefix: '[<color=#0CC>UdonConsole</color>]:'
+  playerJoinPrefix: '[<color=#0C0>JOIN</color>]:'
+  playerleavePrefix: '[<color=#C00>LEAVE</color>]:'
   logWindow: {fileID: 3718074137844359835}
   logItem: {fileID: 3718074138163775205}
   logToggle: {fileID: 3718074138598075316}

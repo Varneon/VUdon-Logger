@@ -47,6 +47,20 @@ namespace Varneon.VUdon.Logger
         private bool proxyEntriesToLogs;
 
         [Space]
+        [Header("Advanced")]
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string systemPrefix = "[<color=#0CC>UdonConsole</color>]:";
+
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string playerJoinPrefix = "[<color=#0C0>JOIN</color>]:";
+
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string playerLeavePrefix = "[<color=#C00>LEAVE</color>]:";
+
+        [Space]
         [Header("References")]
         [SerializeField]
         [FieldParentElement("Foldout_References")]
@@ -72,12 +86,6 @@ namespace Varneon.VUdon.Logger
         #endregion
 
         #region Constants
-        private const string LOG_PREFIX = "[<color=#00FFFF>UdonConsole</color>]:";
-
-        private const string
-            JOIN_PREFIX = "[<color=lime>JOIN</color>]",
-            LEAVE_PREFIX = "[<color=red>LEAVE</color>]";
-
         private const string WHITESPACE = " ";
 
         private const int
@@ -97,11 +105,11 @@ namespace Varneon.VUdon.Logger
             scrollbar = GetComponentInChildren<Scrollbar>(true);
             canvasRoot = GetComponentInChildren<Canvas>(true).GetComponent<RectTransform>();
 
-            Log($"{LOG_PREFIX} This is Varneon's Udon Essentials Console!");
-            LogWarning($"{LOG_PREFIX} It can show warnings if something is out of the ordinary");
-            LogError($"{LOG_PREFIX} And errors can also be shown if something goes completely wrong");
-            Log($"{LOG_PREFIX} Context objects are also supported:", this);
-            Log($"{LOG_PREFIX} As well as assertions:");
+            Log($"{systemPrefix} This is Varneon's Udon Essentials Console!");
+            LogWarning($"{systemPrefix} It can show warnings if something is out of the ordinary");
+            LogError($"{systemPrefix} And errors can also be shown if something goes completely wrong");
+            Log($"{systemPrefix} Context objects are also supported:", this);
+            Log($"{systemPrefix} As well as assertions:");
             Assert(false, null);
         }
 
@@ -290,14 +298,14 @@ namespace Varneon.VUdon.Logger
         #region Player Events
         public override void OnPlayerJoined(VRCPlayerApi player)
         {
-            Log(string.Join(WHITESPACE, new string[] { LOG_PREFIX, JOIN_PREFIX, player.displayName }));
+            Log(string.Join(WHITESPACE, new string[] { systemPrefix, playerJoinPrefix, player.displayName }));
         }
 
         public override void OnPlayerLeft(VRCPlayerApi player)
         {
             if (!Utilities.IsValid(player)) { return; }
 
-            Log(string.Join(WHITESPACE, new string[] { LOG_PREFIX, LEAVE_PREFIX, player.displayName }));
+            Log(string.Join(WHITESPACE, new string[] { systemPrefix, playerLeavePrefix, player.displayName }));
         }
         #endregion
 
