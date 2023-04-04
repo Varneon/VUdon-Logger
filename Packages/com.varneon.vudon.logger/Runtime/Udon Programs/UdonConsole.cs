@@ -68,6 +68,10 @@ namespace Varneon.VUdon.Logger
         [FieldParentElement("Foldout_Settings")]
         private bool proxyEntriesToLogs;
 
+        /// <summary>
+        /// Format of the timestamp
+        /// <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings"/>
+        /// </summary>
         [Space]
         [Header("Advanced")]
         [SerializeField]
