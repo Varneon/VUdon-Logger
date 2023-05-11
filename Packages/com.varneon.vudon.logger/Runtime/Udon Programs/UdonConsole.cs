@@ -1,6 +1,7 @@
 ﻿#pragma warning disable IDE0044 // Making serialized fields readonly hides them from the inspector
 
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Varneon.VInspector;
@@ -109,9 +110,11 @@ namespace Varneon.VUdon.Logger
         private InputField maxLogEntriesField, fontSizeField;
         #endregion
 
-        #region Private
+        #region Hidden
+        [SerializeField, HideInInspector]
         private Scrollbar scrollbar;
 
+        [SerializeField, HideInInspector]
         private RectTransform canvasRoot;
         #endregion
 
@@ -130,11 +133,6 @@ namespace Varneon.VUdon.Logger
         #region Private Methods
         private void Start()
         {
-            logItem.GetComponentInChildren<Text>(true).fontSize = fontSize;
-            timestampsToggle.isOn = !showTimestamps;
-            scrollbar = GetComponentInChildren<Scrollbar>(true);
-            canvasRoot = GetComponentInChildren<Canvas>(true).GetComponent<RectTransform>();
-
             Log($"{systemPrefix} This is Varneon's Udon Essentials Console!");
             LogWarning($"{systemPrefix} It can show warnings if something is out of the ordinary");
             LogError($"{systemPrefix} And errors can also be shown if something goes completely wrong");
@@ -460,6 +458,28 @@ namespace Varneon.VUdon.Logger
                 text.fontSize = this.fontSize;
             }
         }
+        #endregion
+
+        #region Initialization
+
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
+        [UnityEditor.Callbacks.PostProcessScene(-1)]
+        private static void InitializeOnBuild()
+        {
+            GameObject[] sceneRoots = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+
+            System.Collections.Generic.IEnumerable<UdonConsole> consoles = sceneRoots.SelectMany(r => r.GetComponentsInChildren<UdonConsole>());
+
+            foreach (UdonConsole console in consoles)
+            {
+                console.logItem.GetComponentInChildren<Text>(true).fontSize = console.fontSize;
+                console.timestampsToggle.isOn = !console.showTimestamps;
+                console.scrollbar = console.GetComponentInChildren<Scrollbar>(true);
+                console.canvasRoot = console.GetComponentInChildren<Canvas>(true).GetComponent<RectTransform>();
+            }
+        }
+#endif
+
         #endregion
     }
 }
