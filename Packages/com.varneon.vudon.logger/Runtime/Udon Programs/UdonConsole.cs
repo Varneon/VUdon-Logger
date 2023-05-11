@@ -68,8 +68,16 @@ namespace Varneon.VUdon.Logger
         [FieldParentElement("Foldout_Settings")]
         private bool proxyEntriesToLogs;
 
+        /// <summary>
+        /// Format of the timestamp
+        /// <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings"/>
+        /// </summary>
         [Space]
         [Header("Advanced")]
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string timestampFormat = "yyyy.MM.dd HH:mm:ss";
+
         [SerializeField]
         [FieldParentElement("Foldout_Advanced")]
         private string systemPrefix = "[<color=#0CC>UdonConsole</color>]:";
@@ -154,11 +162,11 @@ namespace Varneon.VUdon.Logger
             {
                 GameObject item = logWindow.GetChild(i).gameObject;
 
-                string[] info = item.name.Split(' ');
+                string[] info = item.name.Split(new char[] { ' ' }, 2);
 
                 LogType type = (LogType)int.Parse(info[0]);
 
-                string timestamp = string.Join(WHITESPACE, new string[] { info[1], info[2] });
+                string timestamp = info[1];
 
                 Text text = item.GetComponent<Text>();
 
@@ -188,12 +196,12 @@ namespace Varneon.VUdon.Logger
         }
 
         /// <summary>
-        /// Gets the current timestamp formatted as "yyyy.MM.dd HH:mm:ss"
+        /// Gets the current timestamp formatted as defined by timestampFormat
         /// </summary>
         /// <returns>Formatted timestamp string</returns>
         private string GetTimestamp()
         {
-            return DateTime.UtcNow.ToLocalTime().ToString("yyyy.MM.dd HH:mm:ss");
+            return DateTime.UtcNow.ToLocalTime().ToString(timestampFormat);
         }
 
         /// <summary>
