@@ -468,7 +468,7 @@ namespace Varneon.VUdon.Logger
         {
             GameObject[] sceneRoots = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
 
-            System.Collections.Generic.IEnumerable<UdonConsole> consoles = sceneRoots.SelectMany(r => r.GetComponentsInChildren<UdonConsole>());
+            System.Collections.Generic.IEnumerable<UdonConsole> consoles = sceneRoots.SelectMany(r => r.GetComponentsInChildren<UdonConsole>(true));
 
             foreach (UdonConsole console in consoles)
             {
