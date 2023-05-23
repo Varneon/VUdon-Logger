@@ -1,13 +1,14 @@
 ﻿#pragma warning disable IDE0044 // Making serialized fields readonly hides them from the inspector
 
 using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Varneon.VInspector;
 using Varneon.VUdon.Logger.Abstract;
 using VRC.SDKBase;
 
-namespace Varneon.UdonPrefabs.RuntimeTools
+namespace Varneon.VUdon.Logger
 {
     /// <summary>
     /// In-game console window for debugging UdonBehaviours
@@ -19,32 +20,76 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         #region Variables
 
         #region Serialized
+        /// <summary>
+        /// Should the timestamps be displayed on log entries by default
+        /// </summary>
         [Header("Settings")]
         [SerializeField]
+        [Tooltip("Should the timestamps be displayed on log entries by default")]
         [FieldParentElement("Foldout_Settings")]
         private bool showTimestamps = false;
 
+        /// <summary>
+        /// How many log entries are ensured to always be visible in the console
+        /// </summary>
         [SerializeField]
-        [Tooltip("How many entries are ensured to always be visible in the console")]
+        [Tooltip("How many log entries are ensured to always be visible in the console")]
         [FieldParentElement("Foldout_Settings")]
         private int minLogEntries = 10;
 
+        /// <summary>
+        /// How many log entries can the console display simultaneously by default
+        /// </summary>
         [SerializeField]
+        [Tooltip("How many log entries can the console display simultaneously")]
         [FieldParentElement("Foldout_Settings")]
         private int maxLogEntries = 100;
 
+        /// <summary>
+        /// How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed
+        /// </summary>
         [SerializeField]
         [Tooltip("How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed")]
         [FieldParentElement("Foldout_Settings")]
         private int maxLogEntriesStep = 50;
 
+        /// <summary>
+        /// Font size
+        /// </summary>
         [SerializeField, Range(8, 32)]
+        [Tooltip("Font size")]
         [FieldParentElement("Foldout_Settings")]
         private int fontSize = 24;
 
+        /// <summary>
+        /// Should the log entries be sent to the default logs as well
+        /// </summary>
         [SerializeField]
+        [Tooltip("Should the log entries be sent to the default logs as well")]
         [FieldParentElement("Foldout_Settings")]
         private bool proxyEntriesToLogs;
+
+        /// <summary>
+        /// Format of the timestamp
+        /// <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings"/>
+        /// </summary>
+        [Space]
+        [Header("Advanced")]
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string timestampFormat = "yyyy.MM.dd HH:mm:ss";
+
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string systemPrefix = "[<color=#0CC>UdonConsole</color>]:";
+
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string playerJoinPrefix = "[<color=#0C0>JOIN</color>]:";
+
+        [SerializeField]
+        [FieldParentElement("Foldout_Advanced")]
+        private string playerLeavePrefix = "[<color=#C00>LEAVE</color>]:";
 
         [Space]
         [Header("References")]
@@ -65,19 +110,15 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         private InputField maxLogEntriesField, fontSizeField;
         #endregion
 
-        #region Private
+        #region Hidden
+        [SerializeField, HideInInspector]
         private Scrollbar scrollbar;
 
+        [SerializeField, HideInInspector]
         private RectTransform canvasRoot;
         #endregion
 
         #region Constants
-        private const string LOG_PREFIX = "[<color=#00FFFF>UdonConsole</color>]:";
-
-        private const string
-            JOIN_PREFIX = "[<color=lime>JOIN</color>]",
-            LEAVE_PREFIX = "[<color=red>LEAVE</color>]";
-
         private const string WHITESPACE = " ";
 
         private const int
@@ -92,16 +133,11 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         #region Private Methods
         private void Start()
         {
-            logItem.GetComponentInChildren<Text>(true).fontSize = fontSize;
-            timestampsToggle.isOn = !showTimestamps;
-            scrollbar = GetComponentInChildren<Scrollbar>(true);
-            canvasRoot = GetComponentInChildren<Canvas>(true).GetComponent<RectTransform>();
-
-            Log($"{LOG_PREFIX} This is Varneon's Udon Essentials Console!");
-            LogWarning($"{LOG_PREFIX} It can show warnings if something is out of the ordinary");
-            LogError($"{LOG_PREFIX} And errors can also be shown if something goes completely wrong");
-            Log($"{LOG_PREFIX} Context objects are also supported:", this);
-            Log($"{LOG_PREFIX} As well as assertions:");
+            Log($"{systemPrefix} This is Varneon's Udon Essentials Console!");
+            LogWarning($"{systemPrefix} It can show warnings if something is out of the ordinary");
+            LogError($"{systemPrefix} And errors can also be shown if something goes completely wrong");
+            Log($"{systemPrefix} Context objects are also supported:", this);
+            Log($"{systemPrefix} As well as assertions:");
             Assert(false, null);
         }
 
@@ -124,11 +160,11 @@ namespace Varneon.UdonPrefabs.RuntimeTools
             {
                 GameObject item = logWindow.GetChild(i).gameObject;
 
-                string[] info = item.name.Split(' ');
+                string[] info = item.name.Split(new char[] { ' ' }, 2);
 
                 LogType type = (LogType)int.Parse(info[0]);
 
-                string timestamp = string.Join(WHITESPACE, new string[] { info[1], info[2] });
+                string timestamp = info[1];
 
                 Text text = item.GetComponent<Text>();
 
@@ -158,12 +194,12 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         }
 
         /// <summary>
-        /// Gets the current timestamp formatted as "yyyy.MM.dd HH:mm:ss"
+        /// Gets the current timestamp formatted as defined by timestampFormat
         /// </summary>
         /// <returns>Formatted timestamp string</returns>
         private string GetTimestamp()
         {
-            return DateTime.UtcNow.ToLocalTime().ToString("yyyy.MM.dd HH:mm:ss");
+            return DateTime.UtcNow.ToLocalTime().ToString(timestampFormat);
         }
 
         /// <summary>
@@ -290,14 +326,14 @@ namespace Varneon.UdonPrefabs.RuntimeTools
         #region Player Events
         public override void OnPlayerJoined(VRCPlayerApi player)
         {
-            Log(string.Join(WHITESPACE, new string[] { LOG_PREFIX, JOIN_PREFIX, player.displayName }));
+            Log(string.Join(WHITESPACE, new string[] { systemPrefix, playerJoinPrefix, player.displayName }));
         }
 
         public override void OnPlayerLeft(VRCPlayerApi player)
         {
             if (!Utilities.IsValid(player)) { return; }
 
-            Log(string.Join(WHITESPACE, new string[] { LOG_PREFIX, LEAVE_PREFIX, player.displayName }));
+            Log(string.Join(WHITESPACE, new string[] { systemPrefix, playerLeavePrefix, player.displayName }));
         }
         #endregion
 
@@ -422,6 +458,28 @@ namespace Varneon.UdonPrefabs.RuntimeTools
                 text.fontSize = this.fontSize;
             }
         }
+        #endregion
+
+        #region Initialization
+
+#if UNITY_EDITOR && !COMPILER_UDONSHARP
+        [UnityEditor.Callbacks.PostProcessScene(-1)]
+        private static void InitializeOnBuild()
+        {
+            GameObject[] sceneRoots = UnityEngine.SceneManagement.SceneManager.GetActiveScene().GetRootGameObjects();
+
+            System.Collections.Generic.IEnumerable<UdonConsole> consoles = sceneRoots.SelectMany(r => r.GetComponentsInChildren<UdonConsole>(true));
+
+            foreach (UdonConsole console in consoles)
+            {
+                console.logItem.GetComponentInChildren<Text>(true).fontSize = console.fontSize;
+                console.timestampsToggle.isOn = !console.showTimestamps;
+                console.scrollbar = console.GetComponentInChildren<Scrollbar>(true);
+                console.canvasRoot = console.GetComponentInChildren<Canvas>(true).GetComponent<RectTransform>();
+            }
+        }
+#endif
+
         #endregion
     }
 }

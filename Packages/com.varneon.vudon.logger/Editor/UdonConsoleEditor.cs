@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 using Varneon.VInspector;
 using Varneon.VUdon.Logger.Abstract;
 
-namespace Varneon.UdonPrefabs.RuntimeTools.Editor
+namespace Varneon.VUdon.Logger.Editor
 {
     /// <summary>
     /// Custom inspector for UdonConsole prefab
@@ -25,6 +25,7 @@ namespace Varneon.UdonPrefabs.RuntimeTools.Editor
             VisualElement inspectorPanel = root.Q("InspectorPanel");
 
             inspectorPanel.Add(new Foldout() { name = "Foldout_Settings", text = "Settings" });
+            inspectorPanel.Add(new Foldout() { name = "Foldout_Advanced", text = "Advanced" });
             inspectorPanel.Add(new Foldout() { name = "Foldout_References", text = "References" });
             inspectorPanel.Add(new Foldout() { name = "Foldout_API", text = "API" });
 
