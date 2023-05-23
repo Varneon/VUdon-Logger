@@ -94,6 +94,14 @@ namespace Varneon.VUdon.Logger
         [SerializeField]
         [FieldNullWarning(true)]
         private InputField maxLogEntriesField;
+
+        [SerializeField]
+        [FieldNullWarning(true)]
+        private Slider panelSeparatorSliderTop, panelSeparatorSliderBottom;
+
+        [SerializeField]
+        [FieldNullWarning(true)]
+        private TextMeshProUGUI messagePreviewText;
         #endregion
 
         #region Hidden
@@ -102,6 +110,10 @@ namespace Varneon.VUdon.Logger
 
         [SerializeField, HideInInspector]
         private RectTransform canvasRoot;
+        #endregion
+
+        #region Private
+        private Button selectedMessage;
         #endregion
 
         #region Constants
@@ -138,6 +150,20 @@ namespace Varneon.VUdon.Logger
                 }
             }
 
+            if (selectedMessage)
+            {
+                LogType type = (LogType)int.Parse(selectedMessage.name[0].ToString());
+
+                if (!IsLogTypeEnabled(type))
+                {
+                    selectedMessage.interactable = true;
+
+                    selectedMessage = null;
+
+                    messagePreviewText.text = string.Empty;
+                }
+            }
+
             for (int i = 0; i < GetCurrentLogEntryCount(); i++)
             {
                 GameObject item = logWindow.GetChild(i).gameObject;
@@ -148,7 +174,7 @@ namespace Varneon.VUdon.Logger
 
                 string timestamp = info[1];
 
-                TextMeshProUGUI text = item.GetComponent<TextMeshProUGUI>();
+                TextMeshProUGUI text = item.GetComponentInChildren<TextMeshProUGUI>();
 
                 string textContent = text.text;
 
@@ -168,11 +194,14 @@ namespace Varneon.VUdon.Logger
         /// <param name="type"></param>
         private void SetLogEntryActive(GameObject logEntry, LogType type)
         {
-            logEntry.SetActive(
-                (type == LogType.Log && !logToggle.isOn) ||
+            logEntry.SetActive(IsLogTypeEnabled(type));
+        }
+
+        private bool IsLogTypeEnabled(LogType type)
+        {
+            return (type == LogType.Log && !logToggle.isOn) ||
                 (type == LogType.Warning && !warningToggle.isOn) ||
-                ((type == LogType.Error || type == LogType.Exception || type == LogType.Assert) && !errorToggle.isOn)
-                );
+                ((type == LogType.Error || type == LogType.Exception || type == LogType.Assert) && !errorToggle.isOn);
         }
 
         /// <summary>
@@ -205,12 +234,23 @@ namespace Varneon.VUdon.Logger
             {
                 newEntry = logWindow.GetChild(0);
                 newEntry.SetAsLastSibling();
+
+                Button entryButton = newEntry.GetComponent<Button>();
+
+                if (!entryButton.interactable)
+                {
+                    selectedMessage = null;
+
+                    entryButton.interactable = true;
+
+                    messagePreviewText.text = string.Empty;
+                }
             }
 
             GameObject newEntryGO = newEntry.gameObject;
 
             newEntryGO.name = string.Join(WHITESPACE, new string[] { ((int)logType).ToString(), timestamp });
-            textComponent = newEntry.GetComponent<TextMeshProUGUI>();
+            textComponent = newEntry.GetComponentInChildren<TextMeshProUGUI>();
 
             textComponent.text = showTimestamps ? message : message.Substring(timestamp.Length + 1);
 
@@ -242,6 +282,42 @@ namespace Varneon.VUdon.Logger
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Selects a message
+        /// </summary>
+        public void SelectMessage()
+        {
+            if (selectedMessage != null)
+            {
+                selectedMessage.interactable = true;
+            }
+
+            Button[] messageButtons = logWindow.GetComponentsInChildren<Button>();
+
+            for (int i = 0; i < messageButtons.Length; i++)
+            {
+                if (messageButtons[i].interactable) { continue; }
+
+                selectedMessage = messageButtons[i];
+
+                string message = selectedMessage.GetComponentInChildren<TextMeshProUGUI>().text;
+
+                messagePreviewText.text = showTimestamps ? message.Substring(selectedMessage.name.Length - 1) : message;
+            }
+        }
+
+        /// <summary>
+        /// Resizes the window panels based on separator slider
+        /// </summary>
+        public void ResizeWindowPanels()
+        {
+            float position = Mathf.Clamp(panelSeparatorSliderBottom.value, 0.1f, 0.9f);
+
+            panelSeparatorSliderBottom.SetValueWithoutNotify(position);
+
+            panelSeparatorSliderTop.value = 1f - position;
+        }
+
         /// <summary>
         /// Scrolls to the bottom of the window
         /// </summary>
