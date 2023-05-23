@@ -114,12 +114,16 @@ namespace Varneon.VUdon.Logger
 
         #region Private
         private Button selectedMessage;
+
+        private bool typeFilterDirty, timestampToggleDirty;
         #endregion
 
         #region Constants
         private const string WHITESPACE = " ";
 
         private const int ENTRIES_HARDCAP = 1000;
+
+        private const int LOG_TYPE_SPRITE_TAG_LENGTH = 11;
         #endregion
 
         #endregion
@@ -172,19 +176,26 @@ namespace Varneon.VUdon.Logger
 
                 LogType type = (LogType)int.Parse(info[0]);
 
-                string timestamp = info[1];
+                if (timestampToggleDirty)
+                {
+                    string timestamp = info[1];
 
-                TextMeshProUGUI text = item.GetComponentInChildren<TextMeshProUGUI>();
+                    TextMeshProUGUI text = item.GetComponentInChildren<TextMeshProUGUI>();
 
-                string textContent = text.text;
+                    string textContent = text.text;
 
-                bool hasTimestamp = textContent.StartsWith(timestamp);
+                    bool hasTimestamp = !showTimestamps;// textContent.Substring(LOG_TYPE_SPRITE_TAG_LENGTH, timestamp.Length).Equals(timestamp);
 
-                if (showTimestamps && !hasTimestamp) { text.text = string.Join(WHITESPACE, new string[] { timestamp, textContent }); }
-                else if (!showTimestamps && hasTimestamp) { text.text = text.text.Substring(timestamp.Length + 1); }
+                    if (showTimestamps && !hasTimestamp) { text.text = textContent.Insert(LOG_TYPE_SPRITE_TAG_LENGTH, string.Concat(timestamp, WHITESPACE)); }
+                    else if (!showTimestamps && hasTimestamp) { text.text = string.Concat(GetLogTypePrefix(type), text.text.Substring(LOG_TYPE_SPRITE_TAG_LENGTH + timestamp.Length)); }
+                }
 
-                SetLogEntryActive(item, type);
+                if (typeFilterDirty) { SetLogEntryActive(item, type); }
             }
+
+            timestampToggleDirty = false;
+
+            typeFilterDirty = false;
         }
 
         /// <summary>
@@ -252,7 +263,7 @@ namespace Varneon.VUdon.Logger
             newEntryGO.name = string.Join(WHITESPACE, new string[] { ((int)logType).ToString(), timestamp });
             textComponent = newEntry.GetComponentInChildren<TextMeshProUGUI>();
 
-            textComponent.text = showTimestamps ? message : message.Substring(timestamp.Length + 1);
+            textComponent.text = message;
 
             SetLogEntryActive(newEntryGO, logType);
 
@@ -272,12 +283,16 @@ namespace Varneon.VUdon.Logger
 
         private string BuildLogStringOutput(LogType logType, object message)
         {
-            return string.Join(" ", GetTimestamp(), GetLogTypePrefix(logType), MessageObjectToString(message));
+            return showTimestamps ? 
+                string.Join(" ", GetLogTypePrefix(logType), GetTimestamp(), MessageObjectToString(message)) :
+                string.Join(" ", GetLogTypePrefix(logType), MessageObjectToString(message));
         }
 
         private string BuildLogStringOutput(LogType logType, object message, UnityEngine.Object context)
         {
-            return string.Join(" ", GetTimestamp(), GetLogTypePrefix(logType), MessageObjectToString(message), ContextObjectToString(context));
+            return showTimestamps ?
+                string.Join(" ", GetLogTypePrefix(logType), GetTimestamp(),  MessageObjectToString(message), ContextObjectToString(context)) :
+                string.Join(" ", GetLogTypePrefix(logType),  MessageObjectToString(message), ContextObjectToString(context));
         }
         #endregion
 
@@ -302,7 +317,7 @@ namespace Varneon.VUdon.Logger
 
                 string message = selectedMessage.GetComponentInChildren<TextMeshProUGUI>().text;
 
-                messagePreviewText.text = showTimestamps ? message.Substring(selectedMessage.name.Length - 1) : message;
+                messagePreviewText.text = showTimestamps ? message.Substring(LOG_TYPE_SPRITE_TAG_LENGTH + selectedMessage.name.Length - 1) : message.Substring(LOG_TYPE_SPRITE_TAG_LENGTH);
             }
         }
 
@@ -379,6 +394,28 @@ namespace Varneon.VUdon.Logger
                 }
             }
         }
+
+        /// <summary>
+        /// Get the log entry prefix for provided log type
+        /// </summary>
+        /// <param name="logType">Type of message e.g. warn or error etc</param>
+        /// <returns>Default log entry prefix of LogType</returns>
+        protected override string GetLogTypePrefix(LogType logType)
+        {
+            switch (logType)
+            {
+                case LogType.Log:
+                    return "<sprite=0>";
+                case LogType.Warning:
+                    return "<sprite=1>";
+                case LogType.Error:
+                case LogType.Assert:
+                case LogType.Exception:
+                    return "<sprite=2>";
+                default:
+                    return string.Empty;
+            }
+        }
         #endregion
 
         #region Player Events
@@ -401,6 +438,8 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ToggleFilterLog()
         {
+            typeFilterDirty = true;
+
             ReloadLogs();
         }
 
@@ -409,6 +448,8 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ToggleFilterWarning()
         {
+            typeFilterDirty = true;
+
             ReloadLogs();
         }
 
@@ -417,6 +458,8 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ToggleFilterError()
         {
+            typeFilterDirty = true;
+
             ReloadLogs();
         }
 
@@ -425,6 +468,8 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ToggleTimestamps()
         {
+            timestampToggleDirty = true;
+
             showTimestamps = !timestampsToggle.isOn;
 
             ReloadLogs();
