@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using UdonSharp;
-using UnityEditor;
-using UnityEngine.UIElements;
-using Varneon.VInspector;
-using Varneon.VUdon.Logger.Abstract;
+﻿using UnityEditor;
+using UnityEngine;
+using Varneon.VUdon.Editors.Editor;
 
 namespace Varneon.VUdon.Logger.Editor
 {
@@ -11,55 +8,93 @@ namespace Varneon.VUdon.Logger.Editor
     /// Custom inspector for UdonConsole prefab
     /// </summary>
     [CustomEditor(typeof(UdonConsole))]
-    [IgnoreFieldsOfType(typeof(UdonSharpBehaviour))]
-    public class UdonConsoleEditor : NeonInspector.NeonInspector
+    public class UdonConsoleEditor : InspectorBase
     {
-        private const string FOLDOUT_PERSISTENCE_KEY = "Varneon/VUdon/Logger/UdonConsole/Editor/Foldouts";
+        [SerializeField]
+        private Texture2D bannerIcon;
 
-        private List<Foldout> foldouts;
+        private bool showWindowSettings;
 
-        protected override void OnInspectorVisualTreeAssetCloned(VisualElement root)
+        private RectTransform canvasRectTransform;
+
+        private float windowWidth, windowHeight, windowScale;
+
+        private static readonly GUIContent WindowFoldoutContent = new GUIContent("Window", "Adjust console window");
+
+        private const string SHOW_WINDOW_SETTINGS_PERSISTENCE_KEY = "Varneon/VUdon/Logger/UdonConsole/Editor/Window";
+
+        protected override string FoldoutPersistenceKey => "Varneon/VUdon/Logger/UdonConsole/Editor/Foldouts";
+
+        protected override InspectorHeader Header => new InspectorHeaderBuilder()
+            .WithTitle("VUdon - UdonConsole")
+            .WithDescription("In-game console window for debugging UdonBehaviours")
+            .WithURL("GitHub", "https://github.com/Varneon/VUdon-Logger")
+            .WithIcon(bannerIcon)
+            .Build();
+
+        protected override void OnEnable()
         {
-            base.OnInspectorVisualTreeAssetCloned(root);
+            base.OnEnable();
 
-            VisualElement inspectorPanel = root.Q("InspectorPanel");
+            canvasRectTransform = ((UdonConsole)target).GetComponentInChildren<Canvas>().GetComponent<RectTransform>();
 
-            inspectorPanel.Add(new Foldout() { name = "Foldout_Settings", text = "Settings" });
-            inspectorPanel.Add(new Foldout() { name = "Foldout_Advanced", text = "Advanced" });
-            inspectorPanel.Add(new Foldout() { name = "Foldout_References", text = "References" });
-            inspectorPanel.Add(new Foldout() { name = "Foldout_API", text = "API" });
+            Vector2 windowResolution = canvasRectTransform.sizeDelta;
 
-            foldouts = root.Query<Foldout>().Build().ToList();
+            windowWidth = windowResolution.x;
 
-            if (EditorPrefs.HasKey(FOLDOUT_PERSISTENCE_KEY))
+            windowHeight = windowResolution.y;
+
+            windowScale = canvasRectTransform.localScale.x;
+
+            if (EditorPrefs.HasKey(SHOW_WINDOW_SETTINGS_PERSISTENCE_KEY))
             {
-                int states = EditorPrefs.GetInt(FOLDOUT_PERSISTENCE_KEY);
-
-                for (int i = 0; i < foldouts.Count; i++)
-                {
-                    foldouts[i].value = (states & (1 << i)) != 0;
-                }
+                showWindowSettings = EditorPrefs.GetBool(SHOW_WINDOW_SETTINGS_PERSISTENCE_KEY);
             }
-
-            APIDocumentationBuilder.BuildAPIDocumentation(root.Q<Foldout>("Foldout_API"), typeof(UdonLogger));
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
-            // If foldouts is null, then OnDestroy was most likely called by prefab override preview
-            if (foldouts == null) { return; }
+            base.OnDestroy();
 
-            int states = 0;
+            EditorPrefs.SetBool(SHOW_WINDOW_SETTINGS_PERSISTENCE_KEY, showWindowSettings);
+        }
 
-            for (int i = 0; i < foldouts.Count; i++)
+        protected override void OnPreDrawFields()
+        {
+            if (showWindowSettings = EditorGUILayout.BeginFoldoutHeaderGroup(showWindowSettings, WindowFoldoutContent))
             {
-                if (foldouts[i].value)
+                GUI.color = Color.black;
+
+                using (EditorGUILayout.VerticalScope verticalScope = new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
                 {
-                    states |= 1 << i;
+                    GUI.Box(verticalScope.rect, string.Empty);
+
+                    GUI.color = Color.white;
+
+                    using (new EditorGUI.IndentLevelScope(1))
+                    {
+                        using (EditorGUI.ChangeCheckScope changeScope = new EditorGUI.ChangeCheckScope())
+                        {
+                            windowWidth = EditorGUILayout.Slider("Width", windowWidth, 1000f, 2000f);
+
+                            windowHeight = EditorGUILayout.Slider("Height", windowHeight, 500f, 2000f);
+
+                            windowScale = Mathf.Clamp(EditorGUILayout.FloatField("Scale", windowScale), 0.0001f, 10f);
+
+                            if (changeScope.changed)
+                            {
+                                Undo.RecordObject(canvasRectTransform, "Adjust UdonConsole Window");
+
+                                canvasRectTransform.sizeDelta = new Vector2(windowWidth, windowHeight);
+
+                                canvasRectTransform.localScale = Vector3.one * windowScale;
+                            }
+                        }
+                    }
                 }
             }
 
-            EditorPrefs.SetInt(FOLDOUT_PERSISTENCE_KEY, states);
+            EditorGUILayout.EndFoldoutHeaderGroup();
         }
     }
 }
