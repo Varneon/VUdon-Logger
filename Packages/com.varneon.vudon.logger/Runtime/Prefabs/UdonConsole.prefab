@@ -1335,12 +1335,12 @@ MonoBehaviour:
     PrefabModifications: []
     SerializationNodes: []
   _udonSharpBackingUdonBehaviour: {fileID: 3718074138842689578}
-  showTimestamps: 0
+  showTimestamps: 1
   minLogEntries: 10
   maxLogEntries: 100
   maxLogEntriesStep: 50
   proxyEntriesToLogs: 0
-  timestampFormat: yyyy.MM.dd HH:mm:ss
+  timestampFormat: '[HH:mm:ss]'
   systemPrefix: '[<color=#0CC>UdonConsole</color>]:'
   playerJoinPrefix: '[<color=#0C0>JOIN</color>]:'
   playerLeavePrefix: '[<color=#C00>LEAVE</color>]:'
