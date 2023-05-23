@@ -69,15 +69,19 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         [FoldoutHeader("Advanced")]
         [SerializeField]
+        [Tooltip("DateTime string format for log timestamps.\n\nYear: yyyy\nMonth: MM\nDay: dd\nHours: HH\nMinutes: mm\nSeconds: ss")]
         private string timestampFormat = "yyyy.MM.dd HH:mm:ss";
 
         [SerializeField]
+        [Tooltip("Prefix for default messages from UdonConsole")]
         private string systemPrefix = "[<color=#0CC>UdonConsole</color>]:";
 
         [SerializeField]
+        [Tooltip("Message prefix for player joining the instance")]
         private string playerJoinPrefix = "[<color=#0C0>JOIN</color>]:";
 
         [SerializeField]
+        [Tooltip("Message prefix for player leaving the instance")]
         private string playerLeavePrefix = "[<color=#C00>LEAVE</color>]:";
 
         [FoldoutHeader("References")]
