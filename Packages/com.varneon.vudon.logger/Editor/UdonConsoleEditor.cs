@@ -75,9 +75,9 @@ namespace Varneon.VUdon.Logger.Editor
                     {
                         using (EditorGUI.ChangeCheckScope changeScope = new EditorGUI.ChangeCheckScope())
                         {
-                            windowWidth = EditorGUILayout.Slider("Width", windowWidth, 1000f, 2000f);
+                            windowWidth = EditorGUILayout.Slider("Width", windowWidth, 300f, 1000f);
 
-                            windowHeight = EditorGUILayout.Slider("Height", windowHeight, 500f, 2000f);
+                            windowHeight = EditorGUILayout.Slider("Height", windowHeight, 200f, 1000f);
 
                             windowScale = Mathf.Clamp(EditorGUILayout.FloatField("Scale", windowScale), 0.0001f, 10f);
 
