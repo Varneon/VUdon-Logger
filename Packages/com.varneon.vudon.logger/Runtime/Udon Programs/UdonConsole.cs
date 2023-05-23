@@ -97,7 +97,11 @@ namespace Varneon.VUdon.Logger
 
         [SerializeField]
         [FieldNullWarning(true)]
-        private Slider panelSeparatorSliderTop, panelSeparatorSliderBottom;
+        private Slider panelSeparatorSlider;
+
+        [SerializeField]
+        [FieldNullWarning(true)]
+        private RectTransform topPanel, bottomPanel;
 
         [SerializeField]
         [FieldNullWarning(true)]
@@ -326,11 +330,12 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ResizeWindowPanels()
         {
-            float position = Mathf.Clamp(panelSeparatorSliderBottom.value, 0.1f, 0.9f);
+            float position = Mathf.Clamp(panelSeparatorSlider.value, 0.1f, 0.9f);
 
-            panelSeparatorSliderBottom.SetValueWithoutNotify(position);
+            panelSeparatorSlider.SetValueWithoutNotify(position);
 
-            panelSeparatorSliderTop.value = 1f - position;
+            topPanel.anchorMin = new Vector2(0f, position);
+            bottomPanel.anchorMax = new Vector2(1f, position);
         }
 
         /// <summary>
