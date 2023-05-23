@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Varneon.VUdon.Editors;
@@ -147,7 +148,7 @@ namespace Varneon.VUdon.Logger
 
                 string timestamp = info[1];
 
-                Text text = item.GetComponent<Text>();
+                TextMeshProUGUI text = item.GetComponent<TextMeshProUGUI>();
 
                 string textContent = text.text;
 
@@ -190,7 +191,7 @@ namespace Varneon.VUdon.Logger
         /// <param name="text"></param>
         private void WriteLine(LogType logType, string message)
         {
-            Text textComponent;
+            TextMeshProUGUI textComponent;
 
             Transform newEntry;
 
@@ -209,7 +210,7 @@ namespace Varneon.VUdon.Logger
             GameObject newEntryGO = newEntry.gameObject;
 
             newEntryGO.name = string.Join(WHITESPACE, new string[] { ((int)logType).ToString(), timestamp });
-            textComponent = newEntry.GetComponent<Text>();
+            textComponent = newEntry.GetComponent<TextMeshProUGUI>();
 
             textComponent.text = showTimestamps ? message : message.Substring(timestamp.Length + 1);
 
