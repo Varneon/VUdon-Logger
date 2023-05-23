@@ -10,11 +10,11 @@
     "url": "https://github.com/Varneon"
   },
   "dependencies": {
-    "com.vrchat.udonsharp": "1.0.1",
+    "com.vrchat.udonsharp": "1.1.6",
     "com.varneon.neon-inspector": "0.0.1"
   },
   "vpmDependencies": {
-    "com.vrchat.udonsharp": "1.x.x",
+    "com.vrchat.udonsharp": ">=1.1.6 <2.0.0",
     "com.varneon.neon-inspector": "0.x.x"
   },
   "resolutionStrategy": "highestMinor"
