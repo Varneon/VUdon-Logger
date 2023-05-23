@@ -3,7 +3,6 @@
     "references": [
         "UdonSharp.Runtime",
         "VRC.Udon",
-        "Varneon.V-Inspector.Runtime",
         "Varneon.VUdon.Editors.Runtime"
     ],
     "includePlatforms": [],
