@@ -50,13 +50,6 @@ namespace Varneon.VUdon.Logger
         private int maxLogEntriesStep = 50;
 
         /// <summary>
-        /// Font size
-        /// </summary>
-        [SerializeField, Range(8, 32)]
-        [Tooltip("Font size")]
-        private int fontSize = 24;
-
-        /// <summary>
         /// Should the log entries be sent to the default logs as well
         /// </summary>
         [SerializeField]
@@ -99,7 +92,7 @@ namespace Varneon.VUdon.Logger
 
         [SerializeField]
         [FieldNullWarning(true)]
-        private InputField maxLogEntriesField, fontSizeField;
+        private InputField maxLogEntriesField;
         #endregion
 
         #region Hidden
@@ -112,10 +105,6 @@ namespace Varneon.VUdon.Logger
 
         #region Constants
         private const string WHITESPACE = " ";
-
-        private const int
-            FONT_MIN_SIZE = 8,
-            FONT_MAX_SIZE = 32;
 
         private const int ENTRIES_HARDCAP = 1000;
         #endregion
@@ -406,52 +395,6 @@ namespace Varneon.VUdon.Logger
         }
         #endregion
 
-        #region Font Size
-        /// <summary>
-        /// Applies the size of the log window font from FontSizeField
-        /// </summary>
-        public void ApplyFontSize()
-        {
-            int.TryParse(fontSizeField.text, out fontSize);
-
-            SetFontSize(fontSize);
-        }
-
-        /// <summary>
-        /// Decreases the size of the log window font
-        /// </summary>
-        public void DecreaseFontSize()
-        {
-            SetFontSize(--fontSize);
-        }
-
-        /// <summary>
-        /// Increases the size of the log window font
-        /// </summary>
-        public void IncreaseFontSize()
-        {
-            SetFontSize(++fontSize);
-        }
-
-        /// <summary>
-        /// Changes the size of the log window font based on the provided number
-        /// </summary>
-        /// <param name="fontSize"></param>
-        private void SetFontSize(int fontSize)
-        {
-            this.fontSize = Mathf.Clamp(fontSize, FONT_MIN_SIZE, FONT_MAX_SIZE);
-
-            fontSizeField.text = this.fontSize.ToString();
-
-            logItem.GetComponentInChildren<Text>(true).fontSize = this.fontSize;
-
-            foreach (Text text in logWindow.GetComponentsInChildren<Text>(true))
-            {
-                text.fontSize = this.fontSize;
-            }
-        }
-        #endregion
-
         #region Initialization
 
 #if UNITY_EDITOR && !COMPILER_UDONSHARP
@@ -464,7 +407,6 @@ namespace Varneon.VUdon.Logger
 
             foreach (UdonConsole console in consoles)
             {
-                console.logItem.GetComponentInChildren<Text>(true).fontSize = console.fontSize;
                 console.timestampsToggle.isOn = !console.showTimestamps;
                 console.scrollbar = console.GetComponentInChildren<Scrollbar>(true);
                 console.canvasRoot = console.GetComponentInChildren<Canvas>(true).GetComponent<RectTransform>();
