@@ -82,15 +82,19 @@ namespace Varneon.VUdon.Logger
 
         [FoldoutHeader("References")]
         [SerializeField]
+        [FieldNullWarning(true)]
         private RectTransform logWindow;
 
         [SerializeField]
+        [FieldNullWarning(true)]
         private GameObject logItem;
 
         [SerializeField]
+        [FieldNullWarning(true)]
         private Toggle logToggle, warningToggle, errorToggle, timestampsToggle;
 
         [SerializeField]
+        [FieldNullWarning(true)]
         private InputField maxLogEntriesField, fontSizeField;
         #endregion
 
