@@ -23,7 +23,7 @@ namespace Varneon.VUdon.Logger
         /// <summary>
         /// Should the timestamps be displayed on log entries by default
         /// </summary>
-        [FoldoutHeader("Settings")]
+        [FoldoutHeader("Settings", "Basic settings for configuring the console window")]
         [SerializeField]
         [Tooltip("Should the timestamps be displayed on log entries by default")]
         private bool showTimestamps = false;
@@ -67,7 +67,7 @@ namespace Varneon.VUdon.Logger
         /// Format of the timestamp
         /// <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings"/>
         /// </summary>
-        [FoldoutHeader("Advanced")]
+        [FoldoutHeader("Advanced", "Advanced message prefix configuration options")]
         [SerializeField]
         [Tooltip("DateTime string format for log timestamps.\n\nYear: yyyy\nMonth: MM\nDay: dd\nHours: HH\nMinutes: mm\nSeconds: ss")]
         private string timestampFormat = "yyyy.MM.dd HH:mm:ss";
@@ -84,7 +84,7 @@ namespace Varneon.VUdon.Logger
         [Tooltip("Message prefix for player leaving the instance")]
         private string playerLeavePrefix = "[<color=#C00>LEAVE</color>]:";
 
-        [FoldoutHeader("References")]
+        [FoldoutHeader("References", "Object references")]
         [SerializeField]
         [FieldNullWarning(true)]
         private RectTransform logWindow;
