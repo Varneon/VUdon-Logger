@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-using UdonSharp;
-using UnityEditor;
-using UnityEngine.UIElements;
-using Varneon.VInspector;
-using Varneon.VUdon.Logger.Abstract;
+﻿using UnityEditor;
+using UnityEngine;
+using Varneon.VUdon.Editors.Editor;
 
 namespace Varneon.VUdon.Logger.Editor
 {
@@ -11,55 +8,18 @@ namespace Varneon.VUdon.Logger.Editor
     /// Custom inspector for UdonConsole prefab
     /// </summary>
     [CustomEditor(typeof(UdonConsole))]
-    [IgnoreFieldsOfType(typeof(UdonSharpBehaviour))]
-    public class UdonConsoleEditor : NeonInspector.NeonInspector
+    public class UdonConsoleEditor : InspectorBase
     {
-        private const string FOLDOUT_PERSISTENCE_KEY = "Varneon/VUdon/Logger/UdonConsole/Editor/Foldouts";
+        [SerializeField]
+        private Texture2D bannerIcon;
 
-        private List<Foldout> foldouts;
+        protected override string FoldoutPersistenceKey => "Varneon/VUdon/Logger/UdonConsole/Editor/Foldouts";
 
-        protected override void OnInspectorVisualTreeAssetCloned(VisualElement root)
-        {
-            base.OnInspectorVisualTreeAssetCloned(root);
-
-            VisualElement inspectorPanel = root.Q("InspectorPanel");
-
-            inspectorPanel.Add(new Foldout() { name = "Foldout_Settings", text = "Settings" });
-            inspectorPanel.Add(new Foldout() { name = "Foldout_Advanced", text = "Advanced" });
-            inspectorPanel.Add(new Foldout() { name = "Foldout_References", text = "References" });
-            inspectorPanel.Add(new Foldout() { name = "Foldout_API", text = "API" });
-
-            foldouts = root.Query<Foldout>().Build().ToList();
-
-            if (EditorPrefs.HasKey(FOLDOUT_PERSISTENCE_KEY))
-            {
-                int states = EditorPrefs.GetInt(FOLDOUT_PERSISTENCE_KEY);
-
-                for (int i = 0; i < foldouts.Count; i++)
-                {
-                    foldouts[i].value = (states & (1 << i)) != 0;
-                }
-            }
-
-            APIDocumentationBuilder.BuildAPIDocumentation(root.Q<Foldout>("Foldout_API"), typeof(UdonLogger));
-        }
-
-        private void OnDestroy()
-        {
-            // If foldouts is null, then OnDestroy was most likely called by prefab override preview
-            if (foldouts == null) { return; }
-
-            int states = 0;
-
-            for (int i = 0; i < foldouts.Count; i++)
-            {
-                if (foldouts[i].value)
-                {
-                    states |= 1 << i;
-                }
-            }
-
-            EditorPrefs.SetInt(FOLDOUT_PERSISTENCE_KEY, states);
-        }
+        protected override InspectorHeader Header => new InspectorHeaderBuilder()
+            .WithTitle("VUdon - UdonConsole")
+            .WithDescription("In-game console window for debugging UdonBehaviours")
+            .WithURL("GitHub", "https://github.com/Varneon/VUdon-Logger")
+            .WithIcon(bannerIcon)
+            .Build();
     }
 }

@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
-using Varneon.VInspector;
+using Varneon.VUdon.Editors;
 using Varneon.VUdon.Logger.Abstract;
 using VRC.SDKBase;
 
@@ -23,10 +23,9 @@ namespace Varneon.VUdon.Logger
         /// <summary>
         /// Should the timestamps be displayed on log entries by default
         /// </summary>
-        [Header("Settings")]
+        [FoldoutHeader("Settings")]
         [SerializeField]
         [Tooltip("Should the timestamps be displayed on log entries by default")]
-        [FieldParentElement("Foldout_Settings")]
         private bool showTimestamps = false;
 
         /// <summary>
@@ -34,7 +33,6 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         [SerializeField]
         [Tooltip("How many log entries are ensured to always be visible in the console")]
-        [FieldParentElement("Foldout_Settings")]
         private int minLogEntries = 10;
 
         /// <summary>
@@ -42,7 +40,6 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         [SerializeField]
         [Tooltip("How many log entries can the console display simultaneously")]
-        [FieldParentElement("Foldout_Settings")]
         private int maxLogEntries = 100;
 
         /// <summary>
@@ -50,7 +47,6 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         [SerializeField]
         [Tooltip("How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed")]
-        [FieldParentElement("Foldout_Settings")]
         private int maxLogEntriesStep = 50;
 
         /// <summary>
@@ -58,7 +54,6 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         [SerializeField, Range(8, 32)]
         [Tooltip("Font size")]
-        [FieldParentElement("Foldout_Settings")]
         private int fontSize = 24;
 
         /// <summary>
@@ -66,47 +61,36 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         [SerializeField]
         [Tooltip("Should the log entries be sent to the default logs as well")]
-        [FieldParentElement("Foldout_Settings")]
         private bool proxyEntriesToLogs;
 
         /// <summary>
         /// Format of the timestamp
         /// <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings"/>
         /// </summary>
-        [Space]
-        [Header("Advanced")]
+        [FoldoutHeader("Advanced")]
         [SerializeField]
-        [FieldParentElement("Foldout_Advanced")]
         private string timestampFormat = "yyyy.MM.dd HH:mm:ss";
 
         [SerializeField]
-        [FieldParentElement("Foldout_Advanced")]
         private string systemPrefix = "[<color=#0CC>UdonConsole</color>]:";
 
         [SerializeField]
-        [FieldParentElement("Foldout_Advanced")]
         private string playerJoinPrefix = "[<color=#0C0>JOIN</color>]:";
 
         [SerializeField]
-        [FieldParentElement("Foldout_Advanced")]
         private string playerLeavePrefix = "[<color=#C00>LEAVE</color>]:";
 
-        [Space]
-        [Header("References")]
+        [FoldoutHeader("References")]
         [SerializeField]
-        [FieldParentElement("Foldout_References")]
         private RectTransform logWindow;
 
         [SerializeField]
-        [FieldParentElement("Foldout_References")]
         private GameObject logItem;
 
         [SerializeField]
-        [FieldParentElement("Foldout_References")]
         private Toggle logToggle, warningToggle, errorToggle, timestampsToggle;
 
         [SerializeField]
-        [FieldParentElement("Foldout_References")]
         private InputField maxLogEntriesField, fontSizeField;
         #endregion
 
