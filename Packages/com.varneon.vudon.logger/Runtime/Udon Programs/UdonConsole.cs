@@ -135,12 +135,12 @@ namespace Varneon.VUdon.Logger
         #region Private Methods
         private void Start()
         {
-            Log($"{systemPrefix} This is Varneon's Udon Essentials Console!");
-            LogWarning($"{systemPrefix} It can show warnings if something is out of the ordinary");
-            LogError($"{systemPrefix} And errors can also be shown if something goes completely wrong");
-            Log($"{systemPrefix} Context objects are also supported:", this);
-            Log($"{systemPrefix} As well as assertions:");
-            Assert(false, null);
+            Log(string.Concat(systemPrefix, " This is <color=#ABCDEF>UdonConsole</color> from <color=#ABCDEF>VUdon - Logger</color> (<u><color=#6789CC>https://github.com/Varneon/VUdon-Logger</color></u>)!"));
+            LogWarning(string.Concat(systemPrefix, " It can show warnings if something is out of the ordinary"));
+            LogError(string.Concat(systemPrefix, " And errors can also be shown if something goes completely wrong"));
+            Log(string.Concat(systemPrefix, " Context objects are also supported: "), this);
+            Log(string.Concat(systemPrefix, " As well as assertions:"));
+            Assert(false, string.Concat(systemPrefix, " Assertion failed!"), null);
         }
 
         /// <summary>
