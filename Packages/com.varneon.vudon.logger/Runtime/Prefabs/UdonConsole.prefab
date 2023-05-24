@@ -1369,7 +1369,7 @@ GameObject:
   m_Layer: 0
   m_Name: UdonConsole
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 2800000, guid: 63875c563e5a6a942b9f5721e28f0c9c, type: 3}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
