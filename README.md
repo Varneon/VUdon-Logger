@@ -14,16 +14,15 @@ Runtime logger for UdonSharp
 
 **UdonConsole** is an in-world console window for viewing the logged messages in game. Implements the **UdonLogger** class for use in a similar window design to the **ConsoleWindow** in the **Unity Editor**.
 
-![Unity_xer9Xo1rlv](https://user-images.githubusercontent.com/26690821/196436225-969b9a5b-407f-48ab-8bd9-9952c6fcc437.png)
+![image](https://github.com/Varneon/VUdon-Logger/assets/26690821/bf83f488-e6a5-41e0-9210-71612cfc194d)
 
 # Installation
 
 <details><summary>
 
-### Dependencies - `2`</summary>
+### Dependencies - `1`</summary>
 
-* [Neon Inspector](https://github.com/Varneon/Neon-Inspector)
-  * [V-Inspector](https://github.com/Varneon/V-Inspector)
+* [VUdon - Editors](https://github.com/Varneon/VUdon-Editors)
 
 </details><details><summary>
 
