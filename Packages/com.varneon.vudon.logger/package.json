@@ -1,7 +1,7 @@
 {
   "name": "com.varneon.vudon.logger",
   "displayName": "VUdon - Logger",
-  "version": "0.4.0-alpha.2",
+  "version": "0.4.0-alpha.3",
   "unity": "2019.4",
   "unityRelease": "29f1",
   "description": "Runtime logger class and in-game console window for UdonSharp",
@@ -15,7 +15,7 @@
   },
   "vpmDependencies": {
     "com.vrchat.udonsharp": ">=1.1.6 <2.0.0",
-    "com.varneon.vudon.editors": ">=0.1.0 <0.2.0"
+    "com.varneon.vudon.editors": ">=0.1.0-alpha.5 <0.2.0"
   },
   "resolutionStrategy": "highestMinor"
 }
