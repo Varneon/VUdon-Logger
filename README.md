@@ -14,6 +14,8 @@ Runtime logger for UdonSharp
 
 **UdonConsole** is an in-world console window for viewing the logged messages in game. Implements the **UdonLogger** class for use in a similar window design to the **ConsoleWindow** in the **Unity Editor**.
 
+> `NOTE`: UdonConsole after `0.4.0` uses [TextMeshProUGUI](https://docs.unity3d.com/Packages/com.unity.textmeshpro@2.1/api/TMPro.TextMeshProUGUI.html) instead of native [Unity UI Text](https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/script-Text.html) components! Not all rich color tags are supported anymore, such as `<color=silver>` and `<color=magenta>`. Read the wiki page to learn mode: [UdonConsole: Supported Rich Text Color Tags](https://github.com/Varneon/VUdon-Logger/wiki/UdonConsole:-Supported-Rich-Text-Color-Tags)
+
 ![image](https://github.com/Varneon/VUdon-Logger/assets/26690821/bf83f488-e6a5-41e0-9210-71612cfc194d)
 
 # Installation
