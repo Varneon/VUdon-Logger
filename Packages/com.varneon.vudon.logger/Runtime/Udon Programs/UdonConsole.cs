@@ -537,6 +537,7 @@ namespace Varneon.VUdon.Logger
                 console.timestampsToggle.isOn = !console.showTimestamps;
                 console.scrollbar = console.GetComponentInChildren<Scrollbar>(true);
                 console.canvasRoot = console.GetComponentInChildren<Canvas>(true).GetComponent<RectTransform>();
+                console.SetMaxLogEntries(console.maxLogEntries);
             }
         }
 #endif
