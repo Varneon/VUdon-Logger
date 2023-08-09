@@ -39,13 +39,6 @@ Runtime logger for UdonSharp
 
 </details><details><summary>
 
-### Import with [Unity Package Manager (git)](https://docs.unity3d.com/2019.4/Documentation/Manual/upm-ui-giturl.html):</summary>
-
-> 1. In the Unity toolbar, select `Window` > `Package Manager` > `[+]` > `Add package from git URL...` 
-> 2. Paste the following link: `https://github.com/Varneon/VUdon-Logger.git?path=/Packages/com.varneon.vudon.logger`
-
-</details><details><summary>
-
 ### Import from [Unitypackage](https://docs.unity3d.com/2019.4/Documentation/Manual/AssetPackagesImport.html):</summary>
 
 > 1. Download latest `com.varneon.vudon.logger.unitypackage` from [here](https://github.com/Varneon/VUdon-Logger/releases/latest)
