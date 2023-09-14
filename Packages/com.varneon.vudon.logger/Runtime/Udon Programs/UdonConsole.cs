@@ -51,13 +51,6 @@ namespace Varneon.VUdon.Logger
         private int maxLogEntriesStep = 50;
 
         /// <summary>
-        /// Should the log entries be sent to the default logs as well
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Should the log entries be sent to the default logs as well")]
-        private bool proxyEntriesToLogs;
-
-        /// <summary>
         /// Format of the timestamp
         /// <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings"/>
         /// </summary>
