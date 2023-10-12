@@ -15,7 +15,7 @@
   },
   "vpmDependencies": {
     "com.vrchat.worlds": ">=3.4.0 <4.0.0",
-    "com.varneon.vudon.editors": ">=0.1.0-alpha.5 <0.2.0"
+    "com.varneon.vudon.editors": ">=0.1.0-alpha.8 <0.2.0"
   },
   "resolutionStrategy": "highestMinor"
 }
