@@ -36,7 +36,7 @@ namespace Varneon.VUdon.Logger.Editor
         {
             base.OnEnable();
 
-            canvasRectTransform = ((UdonConsole)target).GetComponentInChildren<Canvas>().GetComponent<RectTransform>();
+            canvasRectTransform = ((UdonConsole)target).windowRoot;
 
             Vector2 windowResolution = canvasRectTransform.sizeDelta;
 

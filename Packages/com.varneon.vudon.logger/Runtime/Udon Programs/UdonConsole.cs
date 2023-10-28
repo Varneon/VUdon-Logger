@@ -74,6 +74,10 @@ namespace Varneon.VUdon.Logger
         [FoldoutHeader("References", "Object references")]
         [SerializeField]
         [FieldNullWarning(true)]
+        internal RectTransform windowRoot;
+
+        [SerializeField]
+        [FieldNullWarning(true)]
         private RectTransform logWindow;
 
         [SerializeField]
