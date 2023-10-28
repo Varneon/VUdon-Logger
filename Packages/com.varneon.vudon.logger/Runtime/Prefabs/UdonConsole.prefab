@@ -1414,11 +1414,11 @@ MonoBehaviour:
   minLogEntries: 10
   maxLogEntries: 100
   maxLogEntriesStep: 50
-  proxyEntriesToLogs: 0
   timestampFormat: '[HH:mm:ss]'
   systemPrefix: '[<color=#0CC>UdonConsole</color>]:'
   playerJoinPrefix: '[<color=#0C0>JOIN</color>]:'
   playerLeavePrefix: '[<color=#C00>LEAVE</color>]:'
+  windowRoot: {fileID: 3718074139000348890}
   logWindow: {fileID: 37132945389205947}
   logItem: {fileID: 3682445367726478538}
   logToggle: {fileID: 6831429830606566684}
