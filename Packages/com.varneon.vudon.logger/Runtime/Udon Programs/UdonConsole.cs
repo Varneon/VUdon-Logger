@@ -33,14 +33,16 @@ namespace Varneon.VUdon.Logger
         /// How many log entries can the console display simultaneously by default
         /// </summary>
         [SerializeField]
-        [Tooltip("How many log entries can the console display simultaneously")]
+        [Range(ENTRIES_MIN_COUNT, ENTRIES_HARDCAP)]
+        [Tooltip("How many log entries can the console display simultaneously.\t\tThis is the initial maximum log entry count that will be set on build.")]
         private int maxLogEntries = 100;
 
         /// <summary>
         /// How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed
         /// </summary>
         [SerializeField]
-        [Tooltip("How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed")]
+        [Range(10, 100)]
+        [Tooltip("How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed.")]
         private int maxLogEntriesStep = 50;
 
         /// <summary>
