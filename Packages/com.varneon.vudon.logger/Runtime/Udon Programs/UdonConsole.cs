@@ -30,13 +30,6 @@ namespace Varneon.VUdon.Logger
         private bool showTimestamps = false;
 
         /// <summary>
-        /// How many log entries are ensured to always be visible in the console
-        /// </summary>
-        [SerializeField]
-        [Tooltip("How many log entries are ensured to always be visible in the console")]
-        private int minLogEntries = 10;
-
-        /// <summary>
         /// How many log entries can the console display simultaneously by default
         /// </summary>
         [SerializeField]
@@ -122,7 +115,9 @@ namespace Varneon.VUdon.Logger
         #region Constants
         private const string WHITESPACE = " ";
 
-        private const int ENTRIES_HARDCAP = 1000;
+        private const int
+            ENTRIES_MIN_COUNT = 10,
+            ENTRIES_HARDCAP = 1000;
 
         private const int LOG_TYPE_SPRITE_TAG_LENGTH = 11;
         #endregion
@@ -511,7 +506,7 @@ namespace Varneon.VUdon.Logger
         /// <param name="maxEntries"></param>
         private void SetMaxLogEntries(int maxEntries)
         {
-            maxLogEntries = Mathf.Clamp(maxEntries, minLogEntries, ENTRIES_HARDCAP);
+            maxLogEntries = Mathf.Clamp(maxEntries, ENTRIES_MIN_COUNT, ENTRIES_HARDCAP);
 
             maxLogEntriesField.text = maxLogEntries.ToString();
 
