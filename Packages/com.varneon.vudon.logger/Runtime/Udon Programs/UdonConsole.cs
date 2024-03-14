@@ -2,9 +2,10 @@
 
 using System;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Varneon.VInspector;
+using Varneon.VUdon.Editors;
 using Varneon.VUdon.Logger.Abstract;
 using VRC.SDKBase;
 
@@ -14,6 +15,8 @@ namespace Varneon.VUdon.Logger
     /// In-game console window for debugging UdonBehaviours
     /// </summary>
     [SelectionBase]
+    [AddComponentMenu("")]
+    [DisallowMultipleComponent]
     [DefaultExecutionOrder(-2146483648)]
     public class UdonConsole : UdonLogger
     {
@@ -23,91 +26,80 @@ namespace Varneon.VUdon.Logger
         /// <summary>
         /// Should the timestamps be displayed on log entries by default
         /// </summary>
-        [Header("Settings")]
+        [FoldoutHeader("Settings", "Basic settings for configuring the console window")]
         [SerializeField]
         [Tooltip("Should the timestamps be displayed on log entries by default")]
-        [FieldParentElement("Foldout_Settings")]
         private bool showTimestamps = false;
-
-        /// <summary>
-        /// How many log entries are ensured to always be visible in the console
-        /// </summary>
-        [SerializeField]
-        [Tooltip("How many log entries are ensured to always be visible in the console")]
-        [FieldParentElement("Foldout_Settings")]
-        private int minLogEntries = 10;
 
         /// <summary>
         /// How many log entries can the console display simultaneously by default
         /// </summary>
         [SerializeField]
-        [Tooltip("How many log entries can the console display simultaneously")]
-        [FieldParentElement("Foldout_Settings")]
+        [Range(ENTRIES_MIN_COUNT, ENTRIES_HARDCAP)]
+        [Tooltip("How many log entries can the console display simultaneously.\t\tThis is the initial maximum log entry count that will be set on build.")]
         private int maxLogEntries = 100;
 
         /// <summary>
         /// How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed
         /// </summary>
         [SerializeField]
-        [Tooltip("How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed")]
-        [FieldParentElement("Foldout_Settings")]
+        [Range(10, 100)]
+        [Tooltip("How many entries should be incremented/decremented from MaxLogEntries when buttons on the UI are pressed.")]
         private int maxLogEntriesStep = 50;
-
-        /// <summary>
-        /// Font size
-        /// </summary>
-        [SerializeField, Range(8, 32)]
-        [Tooltip("Font size")]
-        [FieldParentElement("Foldout_Settings")]
-        private int fontSize = 24;
-
-        /// <summary>
-        /// Should the log entries be sent to the default logs as well
-        /// </summary>
-        [SerializeField]
-        [Tooltip("Should the log entries be sent to the default logs as well")]
-        [FieldParentElement("Foldout_Settings")]
-        private bool proxyEntriesToLogs;
 
         /// <summary>
         /// Format of the timestamp
         /// <see href="https://learn.microsoft.com/en-us/dotnet/standard/base-types/custom-date-and-time-format-strings"/>
         /// </summary>
-        [Space]
-        [Header("Advanced")]
+        [FoldoutHeader("Advanced", "Advanced message prefix configuration options")]
         [SerializeField]
-        [FieldParentElement("Foldout_Advanced")]
+        [Tooltip("DateTime string format for log timestamps.\n\nYear: yyyy\nMonth: MM\nDay: dd\nHours: HH\nMinutes: mm\nSeconds: ss")]
         private string timestampFormat = "yyyy.MM.dd HH:mm:ss";
 
         [SerializeField]
-        [FieldParentElement("Foldout_Advanced")]
+        [Tooltip("Prefix for default messages from UdonConsole")]
         private string systemPrefix = "[<color=#0CC>UdonConsole</color>]:";
 
         [SerializeField]
-        [FieldParentElement("Foldout_Advanced")]
+        [Tooltip("Message prefix for player joining the instance")]
         private string playerJoinPrefix = "[<color=#0C0>JOIN</color>]:";
 
         [SerializeField]
-        [FieldParentElement("Foldout_Advanced")]
+        [Tooltip("Message prefix for player leaving the instance")]
         private string playerLeavePrefix = "[<color=#C00>LEAVE</color>]:";
 
-        [Space]
-        [Header("References")]
+        [FoldoutHeader("References", "Object references")]
         [SerializeField]
-        [FieldParentElement("Foldout_References")]
+        [FieldNullWarning(true)]
+        internal RectTransform windowRoot;
+
+        [SerializeField]
+        [FieldNullWarning(true)]
         private RectTransform logWindow;
 
         [SerializeField]
-        [FieldParentElement("Foldout_References")]
+        [FieldNullWarning(true)]
         private GameObject logItem;
 
         [SerializeField]
-        [FieldParentElement("Foldout_References")]
+        [FieldNullWarning(true)]
         private Toggle logToggle, warningToggle, errorToggle, timestampsToggle;
 
         [SerializeField]
-        [FieldParentElement("Foldout_References")]
-        private InputField maxLogEntriesField, fontSizeField;
+        [FieldNullWarning(true)]
+        private InputField maxLogEntriesField;
+
+        [SerializeField]
+        [FieldNullWarning(true)]
+        private Slider panelSeparatorSlider;
+
+        [SerializeField]
+        [FieldNullWarning(true)]
+        private RectTransform topPanel, bottomPanel;
+
+        [SerializeField]
+        [FieldNullWarning(true)]
+        private TextMeshProUGUI messagePreviewText;
         #endregion
 
         #region Hidden
@@ -118,14 +110,20 @@ namespace Varneon.VUdon.Logger
         private RectTransform canvasRoot;
         #endregion
 
+        #region Private
+        private Button selectedMessage;
+
+        private bool typeFilterDirty, timestampToggleDirty;
+        #endregion
+
         #region Constants
         private const string WHITESPACE = " ";
 
         private const int
-            FONT_MIN_SIZE = 8,
-            FONT_MAX_SIZE = 32;
+            ENTRIES_MIN_COUNT = 10,
+            ENTRIES_HARDCAP = 1000;
 
-        private const int ENTRIES_HARDCAP = 1000;
+        private const int LOG_TYPE_SPRITE_TAG_LENGTH = 11;
         #endregion
 
         #endregion
@@ -133,12 +131,12 @@ namespace Varneon.VUdon.Logger
         #region Private Methods
         private void Start()
         {
-            Log($"{systemPrefix} This is Varneon's Udon Essentials Console!");
-            LogWarning($"{systemPrefix} It can show warnings if something is out of the ordinary");
-            LogError($"{systemPrefix} And errors can also be shown if something goes completely wrong");
-            Log($"{systemPrefix} Context objects are also supported:", this);
-            Log($"{systemPrefix} As well as assertions:");
-            Assert(false, null);
+            Log(string.Concat(systemPrefix, " This is <color=#ABCDEF>UdonConsole</color> from <color=#ABCDEF>VUdon - Logger</color> (<u><color=#6789CC>https://github.com/Varneon/VUdon-Logger</color></u>)!"));
+            LogWarning(string.Concat(systemPrefix, " It can show warnings if something is out of the ordinary"));
+            LogError(string.Concat(systemPrefix, " And errors can also be shown if something goes completely wrong"));
+            Log(string.Concat(systemPrefix, " Context objects are also supported: "), this);
+            Log(string.Concat(systemPrefix, " As well as assertions:"));
+            Assert(false, string.Concat(systemPrefix, " Assertion failed!"), null);
         }
 
         /// <summary>
@@ -156,6 +154,20 @@ namespace Varneon.VUdon.Logger
                 }
             }
 
+            if (selectedMessage)
+            {
+                LogType type = (LogType)int.Parse(selectedMessage.name[0].ToString());
+
+                if (!IsLogTypeEnabled(type))
+                {
+                    selectedMessage.interactable = true;
+
+                    selectedMessage = null;
+
+                    messagePreviewText.text = string.Empty;
+                }
+            }
+
             for (int i = 0; i < GetCurrentLogEntryCount(); i++)
             {
                 GameObject item = logWindow.GetChild(i).gameObject;
@@ -164,19 +176,26 @@ namespace Varneon.VUdon.Logger
 
                 LogType type = (LogType)int.Parse(info[0]);
 
-                string timestamp = info[1];
+                if (timestampToggleDirty)
+                {
+                    string timestamp = info[1];
 
-                Text text = item.GetComponent<Text>();
+                    TextMeshProUGUI text = item.GetComponentInChildren<TextMeshProUGUI>();
 
-                string textContent = text.text;
+                    string textContent = text.text;
 
-                bool hasTimestamp = textContent.StartsWith(timestamp);
+                    bool hasTimestamp = !showTimestamps;// textContent.Substring(LOG_TYPE_SPRITE_TAG_LENGTH, timestamp.Length).Equals(timestamp);
 
-                if (showTimestamps && !hasTimestamp) { text.text = string.Join(WHITESPACE, new string[] { timestamp, textContent }); }
-                else if (!showTimestamps && hasTimestamp) { text.text = text.text.Substring(timestamp.Length + 1); }
+                    if (showTimestamps && !hasTimestamp) { text.text = textContent.Insert(LOG_TYPE_SPRITE_TAG_LENGTH, string.Concat(timestamp, WHITESPACE)); }
+                    else if (!showTimestamps && hasTimestamp) { text.text = string.Concat(GetLogTypePrefix(type), text.text.Substring(LOG_TYPE_SPRITE_TAG_LENGTH + timestamp.Length)); }
+                }
 
-                SetLogEntryActive(item, type);
+                if (typeFilterDirty) { SetLogEntryActive(item, type); }
             }
+
+            timestampToggleDirty = false;
+
+            typeFilterDirty = false;
         }
 
         /// <summary>
@@ -186,11 +205,14 @@ namespace Varneon.VUdon.Logger
         /// <param name="type"></param>
         private void SetLogEntryActive(GameObject logEntry, LogType type)
         {
-            logEntry.SetActive(
-                (type == LogType.Log && !logToggle.isOn) ||
+            logEntry.SetActive(IsLogTypeEnabled(type));
+        }
+
+        private bool IsLogTypeEnabled(LogType type)
+        {
+            return (type == LogType.Log && !logToggle.isOn) ||
                 (type == LogType.Warning && !warningToggle.isOn) ||
-                ((type == LogType.Error || type == LogType.Exception || type == LogType.Assert) && !errorToggle.isOn)
-                );
+                ((type == LogType.Error || type == LogType.Exception || type == LogType.Assert) && !errorToggle.isOn);
         }
 
         /// <summary>
@@ -209,7 +231,7 @@ namespace Varneon.VUdon.Logger
         /// <param name="text"></param>
         private void WriteLine(LogType logType, string message)
         {
-            Text textComponent;
+            TextMeshProUGUI textComponent;
 
             Transform newEntry;
 
@@ -223,14 +245,25 @@ namespace Varneon.VUdon.Logger
             {
                 newEntry = logWindow.GetChild(0);
                 newEntry.SetAsLastSibling();
+
+                Button entryButton = newEntry.GetComponent<Button>();
+
+                if (!entryButton.interactable)
+                {
+                    selectedMessage = null;
+
+                    entryButton.interactable = true;
+
+                    messagePreviewText.text = string.Empty;
+                }
             }
 
             GameObject newEntryGO = newEntry.gameObject;
 
             newEntryGO.name = string.Join(WHITESPACE, new string[] { ((int)logType).ToString(), timestamp });
-            textComponent = newEntry.GetComponent<Text>();
+            textComponent = newEntry.GetComponentInChildren<TextMeshProUGUI>();
 
-            textComponent.text = showTimestamps ? message : message.Substring(timestamp.Length + 1);
+            textComponent.text = message;
 
             SetLogEntryActive(newEntryGO, logType);
 
@@ -250,16 +283,57 @@ namespace Varneon.VUdon.Logger
 
         private string BuildLogStringOutput(LogType logType, object message)
         {
-            return string.Join(" ", GetTimestamp(), GetLogTypePrefix(logType), MessageObjectToString(message));
+            return showTimestamps ? 
+                string.Join(" ", GetLogTypePrefix(logType), GetTimestamp(), MessageObjectToString(message)) :
+                string.Join(" ", GetLogTypePrefix(logType), MessageObjectToString(message));
         }
 
         private string BuildLogStringOutput(LogType logType, object message, UnityEngine.Object context)
         {
-            return string.Join(" ", GetTimestamp(), GetLogTypePrefix(logType), MessageObjectToString(message), ContextObjectToString(context));
+            return showTimestamps ?
+                string.Join(" ", GetLogTypePrefix(logType), GetTimestamp(),  MessageObjectToString(message), ContextObjectToString(context)) :
+                string.Join(" ", GetLogTypePrefix(logType),  MessageObjectToString(message), ContextObjectToString(context));
         }
         #endregion
 
         #region Public Methods
+        /// <summary>
+        /// Selects a message
+        /// </summary>
+        public void SelectMessage()
+        {
+            if (selectedMessage != null)
+            {
+                selectedMessage.interactable = true;
+            }
+
+            Button[] messageButtons = logWindow.GetComponentsInChildren<Button>();
+
+            for (int i = 0; i < messageButtons.Length; i++)
+            {
+                if (messageButtons[i].interactable) { continue; }
+
+                selectedMessage = messageButtons[i];
+
+                string message = selectedMessage.GetComponentInChildren<TextMeshProUGUI>().text;
+
+                messagePreviewText.text = showTimestamps ? message.Substring(LOG_TYPE_SPRITE_TAG_LENGTH + selectedMessage.name.Length - 1) : message.Substring(LOG_TYPE_SPRITE_TAG_LENGTH);
+            }
+        }
+
+        /// <summary>
+        /// Resizes the window panels based on separator slider
+        /// </summary>
+        public void ResizeWindowPanels()
+        {
+            float position = Mathf.Clamp(panelSeparatorSlider.value, 0.1f, 0.9f);
+
+            panelSeparatorSlider.SetValueWithoutNotify(position);
+
+            topPanel.anchorMin = new Vector2(0f, position);
+            bottomPanel.anchorMax = new Vector2(1f, position);
+        }
+
         /// <summary>
         /// Scrolls to the bottom of the window
         /// </summary>
@@ -321,6 +395,28 @@ namespace Varneon.VUdon.Logger
                 }
             }
         }
+
+        /// <summary>
+        /// Get the log entry prefix for provided log type
+        /// </summary>
+        /// <param name="logType">Type of message e.g. warn or error etc</param>
+        /// <returns>Default log entry prefix of LogType</returns>
+        protected override string GetLogTypePrefix(LogType logType)
+        {
+            switch (logType)
+            {
+                case LogType.Log:
+                    return "<sprite=0>";
+                case LogType.Warning:
+                    return "<sprite=1>";
+                case LogType.Error:
+                case LogType.Assert:
+                case LogType.Exception:
+                    return "<sprite=2>";
+                default:
+                    return string.Empty;
+            }
+        }
         #endregion
 
         #region Player Events
@@ -343,6 +439,8 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ToggleFilterLog()
         {
+            typeFilterDirty = true;
+
             ReloadLogs();
         }
 
@@ -351,6 +449,8 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ToggleFilterWarning()
         {
+            typeFilterDirty = true;
+
             ReloadLogs();
         }
 
@@ -359,6 +459,8 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ToggleFilterError()
         {
+            typeFilterDirty = true;
+
             ReloadLogs();
         }
 
@@ -367,6 +469,8 @@ namespace Varneon.VUdon.Logger
         /// </summary>
         public void ToggleTimestamps()
         {
+            timestampToggleDirty = true;
+
             showTimestamps = !timestampsToggle.isOn;
 
             ReloadLogs();
@@ -406,57 +510,11 @@ namespace Varneon.VUdon.Logger
         /// <param name="maxEntries"></param>
         private void SetMaxLogEntries(int maxEntries)
         {
-            maxLogEntries = Mathf.Clamp(maxEntries, minLogEntries, ENTRIES_HARDCAP);
+            maxLogEntries = Mathf.Clamp(maxEntries, ENTRIES_MIN_COUNT, ENTRIES_HARDCAP);
 
             maxLogEntriesField.text = maxLogEntries.ToString();
 
             ReloadLogs();
-        }
-        #endregion
-
-        #region Font Size
-        /// <summary>
-        /// Applies the size of the log window font from FontSizeField
-        /// </summary>
-        public void ApplyFontSize()
-        {
-            int.TryParse(fontSizeField.text, out fontSize);
-
-            SetFontSize(fontSize);
-        }
-
-        /// <summary>
-        /// Decreases the size of the log window font
-        /// </summary>
-        public void DecreaseFontSize()
-        {
-            SetFontSize(--fontSize);
-        }
-
-        /// <summary>
-        /// Increases the size of the log window font
-        /// </summary>
-        public void IncreaseFontSize()
-        {
-            SetFontSize(++fontSize);
-        }
-
-        /// <summary>
-        /// Changes the size of the log window font based on the provided number
-        /// </summary>
-        /// <param name="fontSize"></param>
-        private void SetFontSize(int fontSize)
-        {
-            this.fontSize = Mathf.Clamp(fontSize, FONT_MIN_SIZE, FONT_MAX_SIZE);
-
-            fontSizeField.text = this.fontSize.ToString();
-
-            logItem.GetComponentInChildren<Text>(true).fontSize = this.fontSize;
-
-            foreach (Text text in logWindow.GetComponentsInChildren<Text>(true))
-            {
-                text.fontSize = this.fontSize;
-            }
         }
         #endregion
 
@@ -472,10 +530,10 @@ namespace Varneon.VUdon.Logger
 
             foreach (UdonConsole console in consoles)
             {
-                console.logItem.GetComponentInChildren<Text>(true).fontSize = console.fontSize;
                 console.timestampsToggle.isOn = !console.showTimestamps;
                 console.scrollbar = console.GetComponentInChildren<Scrollbar>(true);
                 console.canvasRoot = console.GetComponentInChildren<Canvas>(true).GetComponent<RectTransform>();
+                console.SetMaxLogEntries(console.maxLogEntries);
             }
         }
 #endif
