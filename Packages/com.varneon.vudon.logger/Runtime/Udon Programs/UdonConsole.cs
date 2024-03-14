@@ -18,6 +18,7 @@ namespace Varneon.VUdon.Logger
     [AddComponentMenu("")]
     [DisallowMultipleComponent]
     [DefaultExecutionOrder(-2146483648)]
+    [HelpURL("https://github.com/Varneon/VUdon-Logger/wiki/How-To-Use-UdonConsole")]
     public class UdonConsole : UdonLogger
     {
         #region Variables
