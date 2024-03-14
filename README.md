@@ -18,6 +18,12 @@ Runtime logger for UdonSharp
 
 ![image](https://github.com/Varneon/VUdon-Logger/assets/26690821/bf83f488-e6a5-41e0-9210-71612cfc194d)
 
+# How to Use VUdon Logger
+
+[How To Use UdonConsole](https://github.com/Varneon/VUdon-Logger/wiki/How-To-Use-UdonConsole)
+
+[Implementing UdonLogger](https://github.com/Varneon/VUdon-Logger/wiki/Implementing-UdonLogger) *(Advanced)*
+
 # Installation
 
 <details><summary>
