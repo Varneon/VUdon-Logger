@@ -88,7 +88,7 @@ namespace Varneon.VUdon.Logger
 
         [SerializeField]
         [FieldNullWarning(true)]
-        private InputField maxLogEntriesField;
+        private TMP_InputField maxLogEntriesField;
 
         [SerializeField]
         [FieldNullWarning(true)]
