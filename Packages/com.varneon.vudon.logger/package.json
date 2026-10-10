@@ -1,21 +1,21 @@
 {
   "name": "com.varneon.vudon.logger",
   "displayName": "VUdon - Logger",
-  "version": "0.3.0",
-  "unity": "2019.4",
-  "unityRelease": "29f1",
+  "version": "0.5.0",
+  "unity": "2022.3",
+  "unityRelease": "22f1",
   "description": "Runtime logger class and in-game console window for UdonSharp",
   "author": {
     "name": "Varneon",
     "url": "https://github.com/Varneon"
   },
   "dependencies": {
-    "com.vrchat.udonsharp": "1.1.6",
-    "com.varneon.neon-inspector": "0.0.1"
+    "com.vrchat.worlds": "3.7.4",
+    "com.varneon.vudon.editors": "0.2.0"
   },
   "vpmDependencies": {
-    "com.vrchat.udonsharp": ">=1.1.6 <2.0.0",
-    "com.varneon.neon-inspector": "0.x.x"
+    "com.vrchat.worlds": ">=3.7.4 <4.0.0",
+    "com.varneon.vudon.editors": ">=0.2.0-alpha.2 <0.3.0"
   },
   "resolutionStrategy": "highestMinor"
 }

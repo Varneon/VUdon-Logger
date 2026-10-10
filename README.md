@@ -4,60 +4,49 @@
 
 </div>
 
-Runtime logger for UdonSharp
+Runtime logger for UdonSharp. Send log messages to an UdonLogger in the scene and view them on a world-space UI.
+### Why should you use this?
++ Works even when VRChat's own logs are turned off - don't miss critical info when you might have forgotten to turn logging on
++ Rapid troubleshooting for isolated contexts - add reference to an UdonLogger and feed any logs that might help
++ Isolated to your chosen scope (no need to parse through thousands of lines of VRChat logs or to use custom prefixes)
++ No skill barrier for a visitor to view the logs and report them to you
 
-# UdonLogger class
-
-[**UdonLogger**](https://github.com/Varneon/VUdon-Logger/blob/main/Packages/com.varneon.vudon.logger/Runtime/Udon%20Programs/Abstract/UdonLogger.cs) is an abstract class similar to `UnityEngine.ILogger` interface, which you can extend freely to suit your purposes.
-
-# UdonConsole prefab
-
+## UdonConsole Prefab
 **UdonConsole** is an in-world console window for viewing the logged messages in game. Implements the **UdonLogger** class for use in a similar window design to the **ConsoleWindow** in the **Unity Editor**.
 
-![Unity_xer9Xo1rlv](https://user-images.githubusercontent.com/26690821/196436225-969b9a5b-407f-48ab-8bd9-9952c6fcc437.png)
+## UdonLogger U# Class
+[**UdonLogger**](https://github.com/Varneon/VUdon-Logger/blob/main/Packages/com.varneon.vudon.logger/Runtime/Udon%20Programs/Abstract/UdonLogger.cs) is an abstract class similar to `UnityEngine.ILogger` interface, which you can extend freely to suit your purposes.
 
-# Installation
+> [!IMPORTANT]
+> UdonConsole after `0.4.0` uses [TextMeshProUGUI](https://docs.unity3d.com/Packages/com.unity.textmeshpro@2.1/api/TMPro.TextMeshProUGUI.html) instead of native [Unity UI Text](https://docs.unity3d.com/Packages/com.unity.ugui@1.0/manual/script-Text.html) components! Not all rich color tags are supported anymore, such as `<color=silver>` and `<color=magenta>`. Read the wiki page to learn mode: [UdonConsole: Supported Rich Text Color Tags](https://github.com/Varneon/VUdon-Logger/wiki/UdonConsole:-Supported-Rich-Text-Color-Tags)
 
-<details><summary>
+![image](https://github.com/Varneon/VUdon-Logger/assets/26690821/bf83f488-e6a5-41e0-9210-71612cfc194d)
 
-### Dependencies - `2`</summary>
+# How to Use VUdon Logger
 
-* [Neon Inspector](https://github.com/Varneon/Neon-Inspector)
-  * [V-Inspector](https://github.com/Varneon/V-Inspector)
+[How To Use UdonConsole](https://github.com/Varneon/VUdon-Logger/wiki/How-To-Use-UdonConsole)
 
-</details><details><summary>
+[Implementing UdonLogger](https://github.com/Varneon/VUdon-Logger/wiki/Implementing-UdonLogger) *(Advanced)*
 
-### Import with [VRChat Creator Companion](https://vcc.docs.vrchat.com/vpm/packages#user-packages):</summary>
+## Installation
 
-> 1. Download `com.varneon.vudon.logger.zip` from [here](https://github.com/Varneon/VUdon-Logger/releases/latest)
-> 2. Unpack the .zip somewhere
-> 3. In VRChat Creator Companion, navigate to `Settings` > `User Packages` > `Add`
-> 4. Navigate to the unpacked folder, `com.varneon.vudon.logger` and click `Select Folder`
-> 5. `VUdon - Logger` should now be visible under `Local User Packages` in the project view in VRChat Creator Companion
-> 6. Click `Add`
+### Dependencies - `1`
+* [VUdon Editors](https://github.com/Varneon/VUdon-Editors) *(Makes the prefab inspector more user-friendly)*
 
-</details><details><summary>
+### A) Import with [VRChat Creator Companion](https://vcc.docs.vrchat.com/vpm/)
+* https://vpm.varneon.com/ *(Dependencies will be included in the repository lists)*
 
-### Import with [Unity Package Manager (git)](https://docs.unity3d.com/2019.4/Documentation/Manual/upm-ui-giturl.html):</summary>
-
-> 1. In the Unity toolbar, select `Window` > `Package Manager` > `[+]` > `Add package from git URL...` 
-> 2. Paste the following link: `https://github.com/Varneon/VUdon-Logger.git?path=/Packages/com.varneon.vudon.logger`
-
-</details><details><summary>
-
-### Import from [Unitypackage](https://docs.unity3d.com/2019.4/Documentation/Manual/AssetPackagesImport.html):</summary>
-
-> 1. Download latest `com.varneon.vudon.logger.unitypackage` from [here](https://github.com/Varneon/VUdon-Logger/releases/latest)
-> 2. Import the downloaded .unitypackage into your Unity project
-
-</details>
+### B) Import from [Unitypackage](https://docs.unity3d.com/2022.3/Documentation/Manual/AssetPackagesImport.html)
+1. Download and import [dependencies](https://github.com/Varneon/VUdon-Logger/README.md#dependencies---1) from the respective repositories with their specified installation instructions
+2. Download latest `com.varneon.vudon.logger.unitypackage` from [here](https://github.com/Varneon/VUdon-Logger/releases/latest)
+3. Import the downloaded .unitypackage into your Unity project
 
 <div align="center">
 
 ## Developed by Varneon with :hearts:
 
-![Twitter Follow](https://img.shields.io/twitter/follow/Varneon?color=%231c9cea&label=%40Varneon&logo=Twitter&style=for-the-badge)
-![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UCKTxeXy7gyaxr-YA9qGWOYg?color=%23FF0000&label=Varneon&logo=YouTube&style=for-the-badge)
-![GitHub followers](https://img.shields.io/github/followers/Varneon?color=%23303030&label=Varneon&logo=GitHub&style=for-the-badge)
+[![Twitter Follow](https://img.shields.io/static/v1?style=for-the-badge&label=@Varneon&message=8.4K&color=1b9df0&logo=x)](https://x.com/Varneon)
+[![YouTube Channel Subscribers](https://img.shields.io/static/v1?style=for-the-badge&label=@Varneon&message=1.4K&color=%23FF0000&logo=YouTube)](https://www.youtube.com/Varneon)
+[![GitHub followers](https://img.shields.io/github/followers/Varneon?color=%23303030&label=Varneon&logo=GitHub&style=for-the-badge)](https://github.com/Varneon)
 
 </div>

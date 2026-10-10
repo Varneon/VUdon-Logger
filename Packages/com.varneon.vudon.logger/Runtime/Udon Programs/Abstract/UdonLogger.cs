@@ -230,9 +230,9 @@ namespace Varneon.VUdon.Logger.Abstract
         /// <returns>Context object's string representation</returns>
         protected virtual string ContextObjectToString(Object context)
         {
-            if(context == null) { return "<color=grey>(<color=silver>null</color>)</color>"; }
+            if(context == null) { return "<color=#808080>(<color=#983C3C>null</color>)</color>"; }
 
-            return string.Format("<color=grey>(<color=silver>{0}</color>, <color=silver>{1}</color>)</color>", context.name, context.GetInstanceID());
+            return string.Format("<color=#808080>(<color=#8888aa>{0}</color>, <color=#606060>{1}</color>)</color>", context.name, context.GetInstanceID());
         }
 
         /// <summary>

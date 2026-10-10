@@ -4,9 +4,7 @@
         "Varneon.VUdon.Logger.Runtime",
         "UdonSharp.Editor",
         "UdonSharp.Runtime",
-        "Varneon.V-Inspector.Editor",
-        "Varneon.V-Inspector.Runtime",
-        "Varneon.NeonInspector.Editor"
+        "Varneon.VUdon.Editors.Editor"
     ],
     "includePlatforms": [
         "Editor"
